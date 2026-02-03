@@ -1,0 +1,181 @@
+.about {
+  padding: 8rem 2rem;
+  background-color: var(--bg-secondary);
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-description {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  line-height: 1.8;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 4rem;
+}
+
+.about-text-block {
+  background-color: var(--bg-accent);
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.about-text-block:hover {
+  border-color: rgba(255, 0, 5, 0.3);
+  transform: translateY(-5px);
+}
+
+.about-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.about-text {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.about-highlight {
+  display: flex;
+  align-items: center;
+}
+
+.highlight-card {
+  background: var(--gradient);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(255, 0, 5, 0.2);
+  cursor: pointer;
+}
+
+.highlight-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.highlight-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.8;
+}
+
+@media (max-width: 968px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .about {
+    padding: 4rem 1.5rem;
+  }
+
+  .about-text-block {
+    padding: 2rem;
+  }
+
+  .highlight-card {
+    padding: 2rem;
+  }
+
+  .highlight-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .highlight-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 3rem 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-description {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .about-content {
+    margin-top: 2rem;
+    gap: 1.5rem;
+  }
+
+  .about-text-block {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  .about-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .about-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .highlight-card {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  .highlight-title {
+    font-size: 1.25rem;
+  }
+
+  .highlight-text {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about {
+    padding: 2rem 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .about-text-block,
+  .highlight-card {
+    padding: 1.25rem;
+  }
+}

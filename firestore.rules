@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Правила для коллекции feedback
+    match /feedback/{feedbackId} {
+      // Разрешаем создание (запись) для всех
+      // Минимальная валидация - только проверка типов основных полей
+      allow create: if request.resource.data.telegramNick is string
+                   && request.resource.data.message is string
+                   && request.resource.data.telegramNick.size() > 0
+                   && request.resource.data.message.size() > 0
+                   && request.resource.data.telegramNick.size() <= 100
+                   && request.resource.data.message.size() <= 5000;
+      
+      // Разрешаем чтение для всех (защита на уровне приложения через пароль)
+      allow read: if true;
+      
+      // Запрещаем обновление и удаление для всех
+      allow update, delete: if false;
+    }
+    
+    // Блокируем все остальные коллекции
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

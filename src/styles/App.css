@@ -1,0 +1,22 @@
+.app {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.app.loaded {
+  opacity: 1;
+}
+
+/* Предотвращение горизонтального скролла */
+* {
+  max-width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

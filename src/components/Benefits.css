@@ -1,0 +1,125 @@
+.benefits {
+  padding: 8rem 2rem;
+  background-color: var(--bg-secondary);
+  position: relative;
+}
+
+.benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.benefit-item:hover {
+  border-color: rgba(255, 0, 5, 0.3);
+}
+
+.benefit-icon {
+  flex-shrink: 0;
+  color: var(--accent-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.benefit-item:hover .benefit-icon {
+  transform: scale(1.1);
+  color: var(--accent-red-dark);
+}
+
+.benefit-content {
+  flex: 1;
+}
+
+.benefit-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.benefit-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .benefit-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .benefits {
+    padding: 3rem 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .benefits-list {
+    margin-top: 2rem;
+    gap: 1rem;
+  }
+
+  .benefit-icon {
+    margin: 0 auto;
+  }
+
+  .benefit-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .benefit-description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .benefits {
+    padding: 2rem 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .benefit-item {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .benefit-title {
+    font-size: 1.1rem;
+  }
+
+  .benefit-description {
+    font-size: 0.9rem;
+  }
+}

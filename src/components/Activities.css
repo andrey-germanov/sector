@@ -1,0 +1,150 @@
+.activities {
+  padding: 8rem 2rem;
+  background-color: var(--bg-primary);
+  position: relative;
+}
+
+.section-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+}
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.activity-card {
+  background-color: var(--bg-accent);
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.activity-card:hover::before {
+  opacity: 0.1;
+}
+
+.activity-icon {
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  color: var(--accent-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.activity-card:hover .activity-icon {
+  transform: scale(1.1);
+  color: var(--accent-red-dark);
+}
+
+.activity-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+}
+
+.activity-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 968px) {
+  .activities-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .activities-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .activities {
+    padding: 3rem 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .activity-card {
+    padding: 2rem;
+    border-radius: 15px;
+  }
+
+  .activity-icon {
+    margin-bottom: 1rem;
+  }
+
+  .activity-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .activity-description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .activities {
+    padding: 2rem 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .activity-card {
+    padding: 1.5rem;
+  }
+
+  .activity-title {
+    font-size: 1.1rem;
+  }
+
+  .activity-description {
+    font-size: 0.9rem;
+  }
+}
