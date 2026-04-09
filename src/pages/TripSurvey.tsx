@@ -321,7 +321,7 @@ const TripSurvey = () => {
                     if (e.target.value.length <= 100) updateField('suggestions', e.target.value)
                   }}
                   placeholder="Ваши предложения..."
-                  rows={4}
+                  rows={4} 
                   autoFocus
                 />
                 <span className="char-count">{data.suggestions.length}/100</span>
