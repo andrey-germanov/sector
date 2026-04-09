@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Hero from './components/Hero'
 import CTA from './components/CTA'
 import DataPage from './pages/DataPage'
+import TripSurvey from './pages/TripSurvey'
+import TripDataPage from './pages/TripDataPage'
 import './styles/App.css'
 
 function Landing() {
@@ -29,6 +31,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/data" element={<DataPage />} />
+        <Route path="/trip-survey" element={<TripSurvey />} />
+        <Route path="/data-sector-trip" element={<TripDataPage />} />
       </Routes>
     </Router>
   )

@@ -20,6 +20,27 @@ service cloud.firestore {
       allow update, delete: if false;
     }
     
+    // Правила для коллекции tripSurvey
+    match /tripSurvey/{surveyId} {
+      allow create: if request.resource.data.city is string
+                   && request.resource.data.city.size() > 0
+                   && request.resource.data.city.size() <= 200
+                   && request.resource.data.budgetFrom is string
+                   && request.resource.data.budgetTo is string
+                   && request.resource.data.suggestedLocation is string
+                   && request.resource.data.suggestedLocation.size() <= 500
+                   && request.resource.data.canJuly is string
+                   && request.resource.data.expectations is string
+                   && request.resource.data.expectations.size() <= 200
+                   && request.resource.data.wishes is string
+                   && request.resource.data.wishes.size() <= 200
+                   && request.resource.data.suggestions is string
+                   && request.resource.data.suggestions.size() <= 200;
+
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
     // Блокируем все остальные коллекции
     match /{document=**} {
       allow read, write: if false;

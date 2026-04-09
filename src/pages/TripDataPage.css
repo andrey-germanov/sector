@@ -1,0 +1,285 @@
+.trip-data-page {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  padding: 2rem;
+  color: var(--text-primary);
+}
+
+.trip-data-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.trip-data-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Table */
+.trip-table-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.trip-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.trip-table thead {
+  background: rgba(255, 0, 5, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.trip-table th {
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-red);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.trip-table td {
+  padding: 0.85rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: top;
+}
+
+.trip-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.trip-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.trip-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.td-nowrap {
+  white-space: nowrap;
+}
+
+.td-dates {
+  min-width: 140px;
+  font-size: 0.85rem;
+}
+
+.td-text {
+  min-width: 160px;
+  max-width: 220px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-yes {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.badge-no {
+  background: rgba(255, 0, 5, 0.1);
+  color: var(--accent-red);
+  border: 1px solid rgba(255, 0, 5, 0.3);
+}
+
+/* Reuse styles from DataPage */
+.trip-data-page .password-container {
+  max-width: 400px;
+  margin: 10vh auto;
+  background: var(--bg-accent);
+  padding: 3rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.trip-data-page .password-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.trip-data-page .password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.trip-data-page .password-input {
+  background-color: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.trip-data-page .password-input:focus {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(255, 0, 5, 0.1);
+}
+
+.trip-data-page .password-button {
+  background: var(--gradient);
+  color: var(--text-primary);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
+  box-shadow: 0 10px 30px rgba(255, 0, 5, 0.3);
+}
+
+.trip-data-page .password-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(255, 0, 5, 0.4);
+}
+
+.trip-data-page .password-error {
+  color: var(--accent-red);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.trip-data-page .stats {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  padding: 1rem;
+  background: var(--bg-accent);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1.1rem;
+}
+
+.trip-data-page .stats strong {
+  color: var(--accent-red);
+}
+
+.trip-data-page .logout-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+}
+
+.trip-data-page .logout-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-red);
+}
+
+.trip-data-page .loading,
+.trip-data-page .error,
+.trip-data-page .empty-state {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .trip-data-page {
+    padding: 1rem;
+  }
+
+  .trip-data-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .trip-data-title {
+    font-size: 1.6rem;
+  }
+
+  .trip-data-page .logout-button {
+    width: 100%;
+    max-width: 200px;
+    text-align: center;
+  }
+
+  .trip-data-page .stats {
+    margin-bottom: 1.5rem;
+  }
+
+  .trip-table {
+    font-size: 0.8rem;
+  }
+
+  .trip-table th,
+  .trip-table td {
+    padding: 0.65rem 0.5rem;
+  }
+
+  .trip-data-page .password-container {
+    padding: 2rem 1.5rem;
+    margin: 5vh auto;
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .trip-data-page {
+    padding: 0.75rem;
+  }
+
+  .trip-data-title {
+    font-size: 1.3rem;
+  }
+
+  .trip-table {
+    font-size: 0.75rem;
+  }
+
+  .trip-data-page .password-container {
+    padding: 1.5rem 1rem;
+  }
+}

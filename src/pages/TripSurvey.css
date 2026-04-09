@@ -1,0 +1,474 @@
+.trip-survey-page {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.survey-container {
+  max-width: 560px;
+  width: 100%;
+  background: var(--bg-accent);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.survey-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.survey-title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.survey-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Progress */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.step-indicator {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+/* Steps */
+.step-content {
+  min-height: 240px;
+}
+
+.step-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.step-hint {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Inputs */
+.survey-input {
+  width: 100%;
+  background-color: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.survey-input:focus {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(255, 0, 5, 0.1);
+}
+
+.survey-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* Hide number spinners */
+.survey-input[type="number"]::-webkit-inner-spin-button,
+.survey-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.survey-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Budget */
+.budget-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.budget-field {
+  flex: 1;
+}
+
+.budget-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.budget-divider {
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* July choice */
+.july-choice {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.choice-btn {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.choice-btn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
+}
+
+.choice-btn.active {
+  border-color: var(--accent-red);
+  background: rgba(255, 0, 5, 0.1);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 3px rgba(255, 0, 5, 0.1);
+}
+
+/* Calendar */
+.calendar-section {
+  margin-top: 0.5rem;
+}
+
+.calendar-hint {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.mini-calendar {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.calendar-header-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.calendar-day-name {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+}
+
+.calendar-cell:not(.empty):hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.calendar-cell.selected {
+  background: rgba(255, 0, 5, 0.2);
+  border-color: var(--accent-red);
+  color: var(--text-primary);
+}
+
+.calendar-cell.empty {
+  cursor: default;
+}
+
+.selected-summary {
+  margin-top: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.alternative-section {
+  margin-top: 0.5rem;
+}
+
+/* Textarea */
+.textarea-wrapper {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.survey-textarea {
+  width: 100%;
+  background-color: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.survey-textarea:focus {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(255, 0, 5, 0.1);
+}
+
+.survey-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.char-count {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+/* Navigation */
+.survey-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.nav-btn {
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.next-btn,
+.submit-btn {
+  background: var(--gradient);
+  color: var(--text-primary);
+  box-shadow: 0 10px 30px rgba(255, 0, 5, 0.3);
+  margin-left: auto;
+}
+
+.next-btn:hover:not(:disabled),
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(255, 0, 5, 0.4);
+}
+
+.next-btn:disabled,
+.submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Error */
+.survey-error {
+  background: rgba(255, 0, 5, 0.1);
+  border: 1px solid rgba(255, 0, 5, 0.3);
+  color: var(--accent-red);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Success */
+.success-screen {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 255, 0, 0.1);
+  border: 2px solid rgba(0, 255, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+  color: #4ade80;
+}
+
+.success-title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.success-text {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .trip-survey-page {
+    padding: 1rem;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
+  .survey-container {
+    padding: 1.75rem;
+    border-radius: 20px;
+  }
+
+  .survey-title {
+    font-size: 1.6rem;
+  }
+
+  .step-title {
+    font-size: 1.2rem;
+  }
+
+  .step-content {
+    min-height: 200px;
+  }
+
+  .budget-row {
+    gap: 0.75rem;
+  }
+
+  .july-choice {
+    flex-direction: column;
+  }
+
+  .nav-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .trip-survey-page {
+    padding: 0.75rem;
+    padding-top: 1rem;
+  }
+
+  .survey-container {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .survey-title {
+    font-size: 1.4rem;
+  }
+
+  .survey-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .step-title {
+    font-size: 1.1rem;
+  }
+
+  .survey-input,
+  .survey-textarea {
+    padding: 0.85rem;
+    font-size: 0.95rem;
+  }
+
+  .calendar-cell {
+    font-size: 0.8rem;
+  }
+
+  .nav-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 2rem;
+  }
+
+  .success-title {
+    font-size: 1.5rem;
+  }
+}
