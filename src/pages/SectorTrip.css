@@ -35,14 +35,17 @@
    ============================================================ */
 
 .st-desktop {
+  --st-scale: 1;
   background: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .st-desktop section {
+  flex-shrink: 0;
   width: 1920px;
   height: 1080px;
   position: relative;
@@ -55,18 +58,9 @@
   padding: 88px 96px;
   display: flex;
   flex-direction: column;
-}
-
-/* scale slides down to viewport on smaller-than-1920 desktops */
-@media (max-width: 1919px) and (min-width: 901px) {
-  .st-desktop {
-    overflow-x: hidden;
-  }
-  .st-desktop section {
-    transform: scale(calc(100vw / 1920));
-    transform-origin: top center;
-    margin-bottom: calc((100vw / 1920 - 1) * 1080);
-  }
+  transform: scale(var(--st-scale));
+  transform-origin: center top;
+  margin-bottom: calc((var(--st-scale) - 1) * 1080px);
 }
 
 .st-desktop section::before,

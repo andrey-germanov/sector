@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import './SectorTrip.css'
 
 const dow = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']
@@ -39,8 +39,23 @@ const Calendar = () => {
 }
 
 const SectorTrip = () => {
+  const desktopRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     document.title = 'Сектор · Лето 2026'
+  }, [])
+
+  useEffect(() => {
+    const el = desktopRef.current
+    if (!el) return
+    const update = () => {
+      const w = window.innerWidth
+      const scale = w >= 1920 ? 1 : w / 1920
+      el.style.setProperty('--st-scale', String(scale))
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
   }, [])
 
   return (
@@ -48,7 +63,7 @@ const SectorTrip = () => {
       {/* ============================================================
           DESKTOP — 14 slides, 1920×1080, vertically stacked
           ============================================================ */}
-      <div className="st-desktop">
+      <div className="st-desktop" ref={desktopRef}>
 
         {/* 1 · TITLE */}
         <section className="s-title">
