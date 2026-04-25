@@ -5,6 +5,7 @@ import CTA from './components/CTA'
 import DataPage from './pages/DataPage'
 import TripSurvey from './pages/TripSurvey'
 import TripDataPage from './pages/TripDataPage'
+import SectorTrip from './pages/SectorTrip'
 import './styles/App.css'
 
 function Landing() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/data" element={<DataPage />} />
         <Route path="/trip-survey" element={<TripSurvey />} />
         <Route path="/data-sector-trip" element={<TripDataPage />} />
+        <Route path="/sector-trip" element={<SectorTrip />} />
       </Routes>
     </Router>
   )
