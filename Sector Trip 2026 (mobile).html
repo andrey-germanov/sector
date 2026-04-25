@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Сектор · Лето 2026 (mobile)</title>
+<link rel="stylesheet" href="lumi.css" />
+<style>
+  * { box-sizing:border-box; }
+  html, body {
+    margin:0; padding:0;
+    background:
+      radial-gradient(ellipse 600px 400px at 110% -10%, rgba(108,99,255,0.18), transparent 60%),
+      radial-gradient(ellipse 600px 400px at -10% 110%, rgba(167,139,250,0.10), transparent 60%),
+      linear-gradient(180deg, #06081A 0%, #0B0D1E 50%, #0D0F26 100%);
+    color:var(--fg-primary);
+    font-family:var(--font-sans);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body { max-width:430px; margin:0 auto; }
+  .page {
+    padding:32px 20px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    position:relative;
+  }
+  .page + .page { padding-top:40px; }
+
+  .pageno {
+    font-size:11px; color:var(--fg-tertiary); letter-spacing:1px;
+    text-transform:uppercase; font-weight:600;
+  }
+  .label {
+    font-size:11px; letter-spacing:1.2px; text-transform:uppercase;
+    font-weight:600; color:var(--accent-lavender);
+  }
+  .label.muted { color:var(--fg-tertiary); }
+
+  h2.title {
+    font-size:28px; line-height:1.1; font-weight:700;
+    letter-spacing:-0.8px; margin:8px 0 0 0;
+  }
+
+  .glass {
+    background:rgba(108,99,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:18px;
+    box-shadow:0 4px 20px rgba(108,99,255,0.10), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .pill {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 12px; border-radius:9999px;
+    background:rgba(108,99,255,0.15);
+    border:1px solid rgba(108,99,255,0.4);
+    font-size:12px; font-weight:600; color:var(--fg-primary);
+  }
+  .pill.mint { background:rgba(52,211,153,0.14); border-color:rgba(52,211,153,0.4); color:#86F0C7; }
+  .pill.amber{ background:rgba(245,158,11,0.14); border-color:rgba(245,158,11,0.4); color:#FCC75A; }
+  .pill.coral{ background:rgba(248,113,113,0.14); border-color:rgba(248,113,113,0.4); color:#F8A7A7; }
+  .pill.lav  { background:rgba(167,139,250,0.14); border-color:rgba(167,139,250,0.4); color:#C9B6FF; }
+
+  .brandRow { display:flex; align-items:center; gap:10px; }
+  .brandRow .orb {
+    width:24px; height:24px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #B8B0FF 0%, #6C63FF 45%, #4C46B8 100%);
+    box-shadow:0 0 14px rgba(108,99,255,0.6), inset 0 0 8px rgba(255,255,255,0.2);
+  }
+  .brandRow .name { font-weight:700; font-size:14px; letter-spacing:-0.3px; }
+  .brandRow .name span { color:var(--fg-tertiary); font-weight:500; margin-left:6px; font-size:13px; }
+
+  .topBar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+
+  /* ─── 1 · TITLE ─── */
+  .s1 {
+    min-height:100vh; padding:60px 20px 40px;
+    display:flex; flex-direction:column; justify-content:center;
+    overflow:hidden;
+  }
+  .s1 .heroOrb {
+    position:absolute; right:-120px; top:14%;
+    width:340px; height:340px; border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #C9C0FF 0%, #8B83FF 28%, #6C63FF 55%, #2D2A66 90%);
+    box-shadow:0 0 120px rgba(108,99,255,0.5), inset -20px -30px 100px rgba(0,0,0,0.45), inset 20px 15px 40px rgba(255,255,255,0.18);
+    opacity:0.6;
+    z-index:0;
+  }
+  .s1 .heroOrb::after {
+    content:""; position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(circle at 35% 28%, rgba(255,255,255,0.6) 0%, transparent 22%);
+  }
+  .s1 .inner { position:relative; z-index:1; }
+  .s1 .eyebrow { font-size:11px; letter-spacing:1.6px; text-transform:uppercase; font-weight:600; color:var(--accent-lavender); margin-bottom:20px; }
+  .s1 h1 {
+    font-size:80px; line-height:0.92; font-weight:800;
+    letter-spacing:-3px; margin:0;
+  }
+  .s1 h1 .gloss {
+    background:linear-gradient(135deg, #B8B0FF 0%, #6C63FF 50%, #A78BFA 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .s1 .sub { font-size:16px; color:var(--fg-secondary); font-weight:400; margin-top:24px; line-height:1.4; letter-spacing:-0.2px; }
+  .s1 .meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; }
+
+  /* ─── 2 · TLDR ─── */
+  .tldrStack { display:flex; flex-direction:column; gap:14px; margin-top:20px; }
+  .tldrCard { padding:22px 22px; }
+  .tldrCard .lab { font-size:11px; letter-spacing:1.2px; text-transform:uppercase; font-weight:600; color:var(--fg-tertiary); }
+  .tldrCard .v { font-size:48px; font-weight:300; letter-spacing:-1.5px; line-height:1; margin-top:12px; }
+  .tldrCard .v small { font-size:18px; font-weight:300; color:var(--fg-tertiary); margin-left:4px; letter-spacing:-0.5px; }
+  .tldrCard .sub { font-size:13px; color:var(--fg-secondary); margin-top:10px; line-height:1.4; }
+  .tldrCard.hero {
+    background:linear-gradient(135deg, #7B74FF 0%, #4C46B8 100%);
+    border:1px solid rgba(255,255,255,0.18);
+    box-shadow:0 8px 30px rgba(108,99,255,0.4);
+  }
+  .tldrCard.hero .lab { color:rgba(255,255,255,0.7); }
+  .tldrCard.hero .flag { font-size:64px; line-height:1; }
+  .tldrCard.hero .v { font-size:64px; }
+  .tldrCard.hero .sub { color:rgba(255,255,255,0.85); font-size:14px; }
+
+  /* ─── 3 · DESTINATIONS ─── */
+  .destBars { display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+  .destRow .top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .destRow .name { font-size:15px; font-weight:600; }
+  .destRow .pct { font-size:12px; font-weight:600; color:var(--fg-tertiary); }
+  .destRow .barWrap { height:24px; background:rgba(255,255,255,0.04); border-radius:9999px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); }
+  .destRow .bar { height:100%; border-radius:9999px; display:flex; align-items:center; padding-left:10px; font-size:11px; font-weight:700; color:#fff; }
+  .destRow.winner .name::after { content:" ★"; color:var(--accent-lavender); }
+
+  /* ─── 4 · CALENDAR ─── */
+  .calendar { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:20px; }
+  .calDay {
+    border-radius:8px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.06);
+    aspect-ratio:1;
+    font-size:11px;
+  }
+  .calDay .num { font-size:14px; font-weight:400; line-height:1; color:var(--fg-secondary); }
+  .calDay .pct { font-size:8px; color:var(--fg-tertiary); letter-spacing:0.2px; margin-top:2px; font-weight:600; }
+  .calDay.dow { background:transparent; border:none; aspect-ratio:auto; padding:0 0 4px 0; }
+  .calDay.dow span { font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--fg-tertiary); font-weight:600; }
+  .calDay.empty { background:transparent; border:none; }
+  .calDay.window {
+    background:linear-gradient(135deg, rgba(124,116,255,0.45), rgba(76,70,184,0.55));
+    border-color:rgba(184,176,255,0.5);
+  }
+  .calDay.window .num { color:#fff; font-weight:500; }
+  .calDay.window .pct { color:rgba(255,255,255,0.85); }
+  .calDay.peak {
+    background:linear-gradient(135deg, #B8B0FF, #6C63FF);
+    border-color:#C9C0FF;
+    box-shadow:0 3px 12px rgba(108,99,255,0.5);
+  }
+  .calDay.peak .num { color:#fff; font-weight:600; }
+  .calDay.peak .pct { color:#fff; }
+
+  .calLegend { margin-top:18px; display:flex; flex-direction:column; gap:10px; }
+  .calLegend .item { display:flex; gap:10px; align-items:flex-start; }
+  .calLegend .swatch { width:14px; height:14px; border-radius:5px; flex-shrink:0; margin-top:3px; }
+  .calLegend .item .t { font-size:14px; font-weight:600; }
+  .calLegend .item .d { font-size:12px; color:var(--fg-secondary); margin-top:2px; line-height:1.4; }
+
+  /* ─── 5 · BUDGET ─── */
+  .histo { padding:20px; }
+  .histoBars { display:flex; align-items:flex-end; gap:6px; height:200px; padding:24px 0 4px; }
+  .histoBar { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end; }
+  .histoBar .barTop { width:100%; background:linear-gradient(180deg, #A78BFA 0%, #6C63FF 100%); border-radius:5px 5px 0 0; min-height:3px; position:relative; }
+  .histoBar.peak .barTop { background:linear-gradient(180deg, #C9C0FF 0%, #6C63FF 100%); box-shadow:0 -4px 16px rgba(108,99,255,0.5); }
+  .histoBar .count { position:absolute; top:-18px; left:50%; transform:translateX(-50%); font-size:11px; font-weight:700; color:#fff; }
+  .histoBar .lbl { font-size:8px; color:var(--fg-tertiary); font-weight:600; letter-spacing:0.2px; }
+  .histoAxis { display:flex; justify-content:space-between; font-size:10px; color:var(--fg-tertiary); border-top:1px solid rgba(255,255,255,0.08); padding-top:8px; margin-top:6px; }
+
+  .stats { display:flex; flex-direction:column; gap:12px; margin-top:14px; }
+  .statCard { padding:18px 22px; }
+  .statCard .lab { font-size:11px; letter-spacing:1.2px; text-transform:uppercase; font-weight:600; color:var(--fg-tertiary); }
+  .statCard .v { font-size:34px; font-weight:300; letter-spacing:-1px; line-height:1; margin-top:8px; }
+  .statCard .v small { font-size:14px; color:var(--fg-tertiary); margin-left:4px; font-weight:300; }
+  .statCard .desc { font-size:13px; color:var(--fg-secondary); margin-top:8px; line-height:1.4; }
+  .statCard.recommend { background:linear-gradient(135deg, rgba(52,211,153,0.18), rgba(26,174,132,0.10)); border-color:rgba(52,211,153,0.35); }
+  .statCard.recommend .v { color:#86F0C7; }
+
+  /* ─── 6 · CITIES ─── */
+  .citiesGrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px; }
+  .cityCard { padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+  .cityCard .name { font-size:14px; font-weight:600; }
+  .cityCard .count { font-size:28px; font-weight:300; letter-spacing:-1px; line-height:1; }
+  .cityCard .count small { font-size:11px; color:var(--fg-tertiary); margin-left:4px; font-weight:400; }
+  .cityCard .bar { height:3px; background:rgba(255,255,255,0.05); border-radius:9999px; overflow:hidden; }
+  .cityCard .bar > div { height:100%; background:linear-gradient(90deg, #6C63FF, #A78BFA); border-radius:9999px; }
+  .cityCard.lead { background:linear-gradient(135deg, rgba(124,116,255,0.25), rgba(76,70,184,0.10)); border-color:rgba(184,176,255,0.4); }
+
+  /* ─── themes (7, 8) ─── */
+  .themesStack { display:flex; flex-direction:column; gap:14px; margin-top:20px; }
+  .themeCol { padding:22px; display:flex; flex-direction:column; gap:12px; }
+  .themeCol h3 { font-size:18px; font-weight:700; letter-spacing:-0.4px; margin:0; display:flex; align-items:center; gap:10px; }
+  .themeCol h3 .dot { width:10px; height:10px; border-radius:50%; }
+  .themeCol .lab { font-size:10px; letter-spacing:1.2px; text-transform:uppercase; font-weight:600; color:var(--fg-tertiary); }
+  .themeChips { display:flex; flex-wrap:wrap; gap:6px; }
+  .themeChips .chip {
+    padding:5px 10px; border-radius:9999px;
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+    font-size:11px; font-weight:500;
+  }
+  .themeChips .chip.hot { background:rgba(108,99,255,0.18); border-color:rgba(108,99,255,0.45); color:#C9C0FF; }
+  .themeQuote { font-size:13px; line-height:1.5; color:var(--fg-secondary); padding:10px 12px; border-left:2px solid var(--accent-violet); background:rgba(108,99,255,0.06); border-radius:0 10px 10px 0; }
+  .themeQuote .who { display:block; font-size:10px; color:var(--fg-tertiary); margin-top:4px; letter-spacing:0.5px; font-weight:600; text-transform:uppercase; }
+
+  /* ─── 9 · PROPOSALS ─── */
+  .propGrid { display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+  .propCard { padding:18px 20px; display:flex; flex-direction:column; gap:10px; }
+  .propCard .head { display:flex; align-items:center; gap:12px; }
+  .propCard .icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .propCard h4 { font-size:15px; font-weight:700; margin:0; letter-spacing:-0.2px; }
+  .propCard p { font-size:12px; color:var(--fg-secondary); margin:0; line-height:1.4; }
+  .propCard .votes { font-size:10px; color:var(--fg-tertiary); letter-spacing:0.6px; text-transform:uppercase; font-weight:600; }
+
+  /* ─── 10 · WHY TURKEY ─── */
+  .whyList { display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+  .whyCard { padding:16px 18px; display:flex; flex-direction:column; gap:10px; }
+  .whyCard.lead { background:rgba(108,99,255,0.12); border-color:rgba(184,176,255,0.4); }
+  .whyCard .top { display:flex; justify-content:space-between; align-items:center; }
+  .whyCard .top .name { font-size:16px; font-weight:700; }
+  .whyCard .top .stars { font-size:13px; font-weight:700; color:#86F0C7; }
+  .whyCard .row { display:grid; grid-template-columns:repeat(2,1fr); gap:6px; }
+  .whyCard .row .it { display:flex; flex-direction:column; gap:2px; padding:6px 8px; background:rgba(255,255,255,0.03); border-radius:8px; border:1px solid rgba(255,255,255,0.05); }
+  .whyCard .row .it .l { font-size:9px; letter-spacing:0.8px; text-transform:uppercase; color:var(--fg-tertiary); font-weight:600; }
+  .whyCard .row .it .v { font-size:12px; font-weight:600; }
+  .whyCard .row .it .v.ok { color:#86F0C7; }
+  .whyCard .row .it .v.no { color:#F8A7A7; }
+  .whyCard .row .it .v.amb{ color:#FCC75A; }
+
+  /* ─── 11 · CONCERNS ─── */
+  .concernStack { display:flex; flex-direction:column; gap:12px; margin-top:20px; }
+  .concernCard { padding:18px 20px; display:flex; gap:14px; align-items:flex-start; }
+  .concernCard .ico {
+    width:38px; height:38px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.3);
+    font-size:18px;
+  }
+  .concernCard h4 { font-size:14px; font-weight:700; margin:0 0 4px 0; letter-spacing:-0.2px; }
+  .concernCard p { font-size:12px; color:var(--fg-secondary); margin:0; line-height:1.4; }
+
+  /* ─── 12 · ROADMAP ─── */
+  .recoBig {
+    margin-top:20px;
+    padding:32px 26px;
+    background:linear-gradient(135deg, #7B74FF 0%, #4C46B8 100%);
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 12px 40px rgba(108,99,255,0.4);
+    position:relative; overflow:hidden;
+  }
+  .recoBig::before {
+    content:""; position:absolute; top:-60px; right:-60px;
+    width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+  }
+  .recoBig .flag { font-size:54px; line-height:1; }
+  .recoBig .country { font-size:48px; font-weight:800; letter-spacing:-1.5px; line-height:1; margin-top:8px; }
+  .recoBig .where { font-size:14px; color:rgba(255,255,255,0.85); margin-top:8px; line-height:1.3; }
+  .recoStats { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+  .recoStat { padding:14px 16px; }
+  .recoStat .lab { font-size:10px; letter-spacing:1px; text-transform:uppercase; font-weight:600; color:var(--fg-tertiary); }
+  .recoStat .v { font-size:22px; font-weight:300; letter-spacing:-0.5px; line-height:1; margin-top:4px; }
+  .recoStat .v small { font-size:12px; color:var(--fg-tertiary); margin-left:3px; font-weight:400; }
+
+  .roadmap { margin-top:20px; display:flex; flex-direction:column; gap:10px; }
+  .step { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; background:rgba(108,99,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:14px; }
+  .step .n { width:26px; height:26px; border-radius:8px; background:rgba(108,99,255,0.2); border:1px solid rgba(108,99,255,0.4); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#C9C0FF; flex-shrink:0; }
+  .step h4 { font-size:13px; font-weight:600; margin:0; letter-spacing:-0.2px; }
+  .step p { font-size:11px; color:var(--fg-secondary); margin:3px 0 0 0; line-height:1.3; }
+  .step .when { font-size:9px; color:var(--accent-lavender); letter-spacing:0.6px; text-transform:uppercase; font-weight:700; margin-top:6px; }
+
+  /* ─── 13 · CTA ─── */
+  .s13 { text-align:center; padding:60px 20px; min-height:90vh; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
+  .s13 .bgOrb { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:300px; height:300px; border-radius:50%;
+       background:radial-gradient(circle at 38% 32%, #C9C0FF 0%, #8B83FF 28%, #6C63FF 55%, #2D2A66 90%);
+       opacity:0.25; }
+  .s13 .inner { position:relative; z-index:1; }
+  .s13 .question { font-size:44px; font-weight:800; letter-spacing:-1.5px; line-height:1.05; margin:14px 0 0 0; }
+  .s13 .question .accent { color:var(--accent-lavender); }
+  .s13 .sub { font-size:14px; color:var(--fg-secondary); margin-top:18px; line-height:1.5; }
+  .s13 .meta { display:flex; flex-direction:column; gap:8px; margin-top:24px; align-items:center; }
+
+  /* ─── 14 · LUMI ─── */
+  .s14 { padding:50px 20px 60px; min-height:100vh; position:relative; overflow:hidden; }
+  .s14 .bgOrb {
+    position:absolute; right:-150px; top:18%;
+    width:400px; height:400px; border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #C9C0FF 0%, #8B83FF 28%, #6C63FF 55%, #2D2A66 90%);
+    opacity:0.55;
+    box-shadow:0 0 120px rgba(108,99,255,0.5), inset -20px -30px 100px rgba(0,0,0,0.45), inset 20px 15px 40px rgba(255,255,255,0.18);
+  }
+  .s14 .bgOrb::after {
+    content:""; position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(circle at 35% 28%, rgba(255,255,255,0.5) 0%, transparent 22%);
+  }
+  .s14 .inner { position:relative; z-index:1; }
+  .s14 .lumi {
+    font-size:88px; line-height:0.95; font-weight:800; letter-spacing:-3px; margin:0;
+    background:linear-gradient(135deg, #C9C0FF 0%, #6C63FF 50%, #A78BFA 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .s14 .tag { font-size:18px; color:var(--fg-secondary); font-weight:400; margin-top:8px; letter-spacing:-0.3px; }
+  .s14 .pitch { font-size:15px; line-height:1.5; color:var(--fg-secondary); margin-top:24px; }
+  .s14 .pitch b { color:#fff; }
+  .s14 .steps { display:flex; flex-direction:column; gap:10px; margin-top:24px; }
+  .s14 .step3 { padding:18px 20px; }
+  .s14 .step3 .lab { font-size:10px; letter-spacing:1.2px; text-transform:uppercase; font-weight:600; color:var(--fg-tertiary); }
+  .s14 .step3 .t { font-size:15px; font-weight:600; line-height:1.4; margin-top:6px; }
+  .s14 .step3 .d { font-size:12px; color:var(--fg-secondary); margin-top:4px; line-height:1.4; }
+  .s14 .step3.win { background:linear-gradient(135deg, rgba(52,211,153,0.18), rgba(26,174,132,0.10)); border-color:rgba(52,211,153,0.35); }
+  .s14 .step3.win .lab { color:#86F0C7; }
+  .s14 .step3.win .t { color:#86F0C7; }
+
+  .appstore {
+    display:inline-flex; align-items:center; gap:14px; padding:22px 32px;
+    background:#fff; color:#0B0D1E; border-radius:18px; text-decoration:none;
+    font-weight:700; letter-spacing:-0.3px;
+    box-shadow:0 10px 30px rgba(108,99,255,0.45);
+    margin-top:28px;
+  }
+  .appstore .l1 { font-size:13px; font-weight:500; color:#8B8F9A; letter-spacing:0.6px; text-transform:uppercase; line-height:1; }
+  .appstore .l2 { font-size:26px; font-weight:700; letter-spacing:-0.8px; line-height:1.05; margin-top:3px; }
+
+</style>
+</head>
+<body>
+
+<!-- 1 · TITLE -->
+<section class="page s1">
+  <div class="heroOrb"></div>
+  <div class="inner">
+    <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">01 / 14</div></div>
+    <div class="eyebrow">Лето 2026 · 60 ответов</div>
+    <h1>СЕКТОР<br/><span class="gloss">ВЫЕЗД</span></h1>
+    <div class="sub">Куда едем, на сколько, в какие даты — и что вы все хотите от этой поездки. Собрали данные воедино.</div>
+    <div class="meta">
+      <span class="pill">📊 60 анкет</span>
+      <span class="pill lav">🏖 11 направлений</span>
+      <span class="pill mint">📅 1–20 июля</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · TLDR -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">02 / 14</div></div>
+  <div class="label">главное</div>
+  <h2 class="title">Турция, ~7 дней, 6–13 июля, бюджет 400–600 €.</h2>
+
+  <div class="tldrStack">
+    <div class="tldrCard hero glass">
+      <div class="lab">направление №1</div>
+      <div class="flag" style="margin-top:10px;">🇹🇷</div>
+      <div class="v" style="margin-top:6px;">Турция</div>
+      <div class="sub">24 голоса из 60 · тёплое море, бюджетный all-inclusive, удобные перелёты</div>
+    </div>
+    <div class="tldrCard glass">
+      <div class="lab">оптимальный бюджет</div>
+      <div class="v">450<small> €</small></div>
+      <div class="sub">медиана. Вилка 400–600 € покрывает 64% сектора</div>
+    </div>
+    <div class="tldrCard glass">
+      <div class="lab">рекомендуемые даты</div>
+      <div class="v">6–13<small> июля</small></div>
+      <div class="sub">7 дней · 47 человек могут в эти даты</div>
+    </div>
+    <div class="tldrCard glass">
+      <div class="lab">формат</div>
+      <div class="v" style="font-size:30px; font-weight:600; letter-spacing:-0.5px;">Вилла + море</div>
+      <div class="sub">общее жильё или отель, активная программа</div>
+    </div>
+    <div class="tldrCard glass" style="border-color:rgba(245,158,11,0.3);">
+      <div class="lab">главный риск</div>
+      <div class="v" style="font-size:30px; font-weight:600; letter-spacing:-0.5px; color:#FCC75A;">+40° Египет</div>
+      <div class="sub">слишком жарко. Турция холоднее и стабильнее</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · DESTINATIONS -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">03 / 14</div></div>
+  <div class="label">направления</div>
+  <h2 class="title">Турция выигрывает с большим отрывом.</h2>
+
+  <div class="destBars">
+    <div class="destRow winner">
+      <div class="top"><div class="name">🇹🇷 Турция</div><div class="pct">24 · 40%</div></div>
+      <div class="barWrap"><div class="bar" style="width:100%; background:linear-gradient(90deg,#7B74FF,#A78BFA)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🇬🇪 Грузия</div><div class="pct">13 · 22%</div></div>
+      <div class="barWrap"><div class="bar" style="width:54%; background:linear-gradient(90deg,#6C63FF,#8B83FF)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🇬🇷 Греция</div><div class="pct">12 · 20%</div></div>
+      <div class="barWrap"><div class="bar" style="width:50%; background:linear-gradient(90deg,#5C56DB,#7B74FF)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🇪🇬 Египет</div><div class="pct">10 · 17%</div></div>
+      <div class="barWrap"><div class="bar" style="width:42%; background:linear-gradient(90deg,#4C46B8,#6C63FF)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🇦🇱 Албания</div><div class="pct">9 · 15%</div></div>
+      <div class="barWrap"><div class="bar" style="width:38%; background:linear-gradient(90deg,#4C46B8,#6C63FF)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🇮🇹 Италия</div><div class="pct">6 · 10%</div></div>
+      <div class="barWrap"><div class="bar" style="width:25%; background:linear-gradient(90deg,#3A3590,#5C56DB)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🇪🇸 Испания</div><div class="pct">6 · 10%</div></div>
+      <div class="barWrap"><div class="bar" style="width:25%; background:linear-gradient(90deg,#3A3590,#5C56DB)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🇲🇹 Мальта</div><div class="pct">5 · 8%</div></div>
+      <div class="barWrap"><div class="bar" style="width:21%; background:linear-gradient(90deg,#2D2A66,#4C46B8)"></div></div>
+    </div>
+    <div class="destRow">
+      <div class="top"><div class="name">🌍 другие</div><div class="pct">Болгария · Хорватия · Кипр…</div></div>
+      <div class="barWrap"><div class="bar" style="width:30%; background:linear-gradient(90deg,#2D2A66,#3A3590)"></div></div>
+    </div>
+  </div>
+  <div style="margin-top:14px; font-size:11px; color:var(--fg-tertiary); line-height:1.4;">★ — рекомендация. Один человек мог упомянуть несколько направлений.</div>
+</section>
+
+<!-- 4 · CALENDAR -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">04 / 14</div></div>
+  <div class="label">июль 2026 · доступность</div>
+  <h2 class="title">Окно 6–13 июля — пик готовности.</h2>
+
+  <div class="calendar" id="cal"></div>
+  <div class="calLegend">
+    <div class="item"><div class="swatch" style="background:linear-gradient(135deg,#B8B0FF,#6C63FF);"></div><div><div class="t">Пик · 75%+</div><div class="d">Ядро поездки. Окно 6–13 июля.</div></div></div>
+    <div class="item"><div class="swatch" style="background:linear-gradient(135deg,rgba(124,116,255,0.45),rgba(76,70,184,0.55));"></div><div><div class="t">Хорошо · 55–75%</div><div class="d">Запасной диапазон ±2 дня.</div></div></div>
+    <div class="item"><div class="swatch" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);"></div><div><div class="t">Слабо · &lt; 55%</div><div class="d">Сильно теряем людей.</div></div></div>
+    <div class="item"><div class="swatch" style="background:rgba(52,211,153,0.2); border:1px solid rgba(52,211,153,0.4);"></div><div><div class="t">Рекомендация: 6→13 июля</div><div class="d">7 дней. ≈ 47 из 60 человек.</div></div></div>
+  </div>
+</section>
+
+<!-- 5 · BUDGET -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">05 / 14</div></div>
+  <div class="label">бюджет</div>
+  <h2 class="title">Большинство в коридоре <span style="color:var(--accent-lavender);">300–600 €</span>.</h2>
+
+  <div class="histo glass" style="margin-top:20px;">
+    <div class="histoBars">
+      <div class="histoBar"><div class="barTop" style="height:30px"><div class="count">3</div></div><div class="lbl">0–100</div></div>
+      <div class="histoBar"><div class="barTop" style="height:54px"><div class="count">5</div></div><div class="lbl">100–200</div></div>
+      <div class="histoBar"><div class="barTop" style="height:74px"><div class="count">7</div></div><div class="lbl">200–300</div></div>
+      <div class="histoBar peak"><div class="barTop" style="height:135px"><div class="count">13</div></div><div class="lbl">300–400</div></div>
+      <div class="histoBar peak"><div class="barTop" style="height:175px"><div class="count">17</div></div><div class="lbl">400–600</div></div>
+      <div class="histoBar"><div class="barTop" style="height:96px"><div class="count">9</div></div><div class="lbl">600–800</div></div>
+      <div class="histoBar"><div class="barTop" style="height:64px"><div class="count">6</div></div><div class="lbl">800+</div></div>
+    </div>
+    <div class="histoAxis"><span>0 €</span><span>300</span><span>600</span><span>1000+ €</span></div>
+    <div style="font-size:10px; color:var(--fg-tertiary); margin-top:8px;">по верхней границе диапазона · n = 60</div>
+  </div>
+
+  <div class="stats">
+    <div class="statCard glass">
+      <div class="lab">медиана</div>
+      <div class="v">450<small> €</small></div>
+      <div class="desc">среднестатистический потолок</div>
+    </div>
+    <div class="statCard glass">
+      <div class="lab">сектор в одной коробке</div>
+      <div class="v">300–600<small> €</small></div>
+      <div class="desc">64% людей помещаются — наш операционный коридор</div>
+    </div>
+    <div class="statCard recommend glass">
+      <div class="lab">рекомендация</div>
+      <div class="v">≈ 500<small> €/чел</small></div>
+      <div class="desc">7 дней Турция all-inclusive: перелёт + жильё + еда</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · CITIES -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">06 / 14</div></div>
+  <div class="label">города отправления</div>
+  <h2 class="title">Сектор размазан по 11 городам.</h2>
+
+  <div class="citiesGrid">
+    <div class="cityCard glass lead"><div class="name">🇵🇱 Варшава</div><div class="count">11<small>чел</small></div><div class="bar"><div style="width:100%"></div></div></div>
+    <div class="cityCard glass lead"><div class="name">🇱🇻 Рига</div><div class="count">9<small>чел</small></div><div class="bar"><div style="width:82%"></div></div></div>
+    <div class="cityCard glass"><div class="name">🇲🇩 Кишинёв</div><div class="count">8<small>чел</small></div><div class="bar"><div style="width:73%"></div></div></div>
+    <div class="cityCard glass"><div class="name">🇨🇿 Прага</div><div class="count">8<small>чел</small></div><div class="bar"><div style="width:73%"></div></div></div>
+    <div class="cityCard glass"><div class="name">🇺🇦 Киев</div><div class="count">7<small>чел</small></div><div class="bar"><div style="width:64%"></div></div></div>
+    <div class="cityCard glass"><div class="name">🇱🇹 Вильнюс</div><div class="count">6<small>чел</small></div><div class="bar"><div style="width:55%"></div></div></div>
+    <div class="cityCard glass"><div class="name">🇩🇪 Берлин</div><div class="count">4<small>чел</small></div><div class="bar"><div style="width:36%"></div></div></div>
+    <div class="cityCard glass"><div class="name">🌍 прочие</div><div class="count">7<small>чел</small></div><div class="bar"><div style="width:64%"></div></div></div>
+  </div>
+
+  <div class="glass" style="margin-top:14px; padding:16px 18px;">
+    <div class="label muted" style="margin-bottom:8px;">→ что это значит</div>
+    <div style="font-size:13px; line-height:1.5; color:var(--fg-secondary);">Турция оптимальна логистически: <b style="color:#fff;">прямые рейсы</b> из Варшавы, Риги, Праги, Киева, Кишинёва в Анталию / Стамбул.</div>
+  </div>
+</section>
+
+<!-- 7 · EXPECTATIONS -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">07 / 14</div></div>
+  <div class="label">ожидания</div>
+  <h2 class="title">Эмоции, движ, знакомства — в равных долях.</h2>
+
+  <div class="themesStack">
+    <div class="themeCol glass">
+      <div class="lab">тема 1 · ~38 упоминаний</div>
+      <h3><span class="dot" style="background:#6C63FF;"></span>Эмоции и драйв</h3>
+      <div class="themeChips">
+        <span class="chip hot">«газ»</span><span class="chip hot">«разъебной отдых»</span>
+        <span class="chip hot">«яркие эмоции»</span><span class="chip">«движ»</span>
+        <span class="chip">«драйв»</span><span class="chip">«порвать поездку»</span>
+        <span class="chip">«кайфануть жестко»</span>
+      </div>
+      <div class="themeQuote">«Движ, драйв, отдых в хорошей компании — порвать нахрен ту поездку»<span class="who">Одесса · 200–300€</span></div>
+    </div>
+    <div class="themeCol glass">
+      <div class="lab">тема 2 · ~24 упоминания</div>
+      <h3><span class="dot" style="background:#A78BFA;"></span>Знакомства и единство</h3>
+      <div class="themeChips">
+        <span class="chip hot">«с ребятами»</span><span class="chip">«с другими секторами»</span>
+        <span class="chip">«сплочение»</span><span class="chip">«классная компания»</span>
+        <span class="chip">«новые знакомства»</span><span class="chip">«главное вместе»</span>
+      </div>
+      <div class="themeQuote">«Знакомства с ребятами из других секторов, отдохнуть в другой стране, узнать её культуру»<span class="who">Рига · 100–2500€</span></div>
+    </div>
+    <div class="themeCol glass">
+      <div class="lab">тема 3 · ~22 упоминания</div>
+      <h3><span class="dot" style="background:#34D399;"></span>Чилл и море</h3>
+      <div class="themeChips">
+        <span class="chip hot">«море»</span><span class="chip hot">«чилл»</span>
+        <span class="chip">«пляж»</span><span class="chip">«закаты»</span>
+        <span class="chip">«легкость»</span><span class="chip">«вайб»</span>
+        <span class="chip">«перезагрузка»</span>
+      </div>
+      <div class="themeQuote">«Тёплое море, хорошая погода, удобное жильё, активная программа и дружная атмосфера»<span class="who">Рига · 0–400€</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · WISHES -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">08 / 14</div></div>
+  <div class="label">пожелания</div>
+  <h2 class="title">«Не лагерь. Адекватное жильё. Программа, но без пережима.»</h2>
+
+  <div class="themesStack">
+    <div class="themeCol glass">
+      <div class="lab">формат жилья</div>
+      <h3><span class="dot" style="background:#A78BFA;"></span>Не общежитие</h3>
+      <div class="themeChips">
+        <span class="chip hot">«вилла с бассейном»</span><span class="chip hot">«первая линия»</span>
+        <span class="chip">«адекватный отель»</span><span class="chip">«max 3 в комнате»</span>
+        <span class="chip">«all inclusive»</span>
+      </div>
+      <div class="themeQuote">«Не пять человек в комнате. Чтоб было достаточно унитазов и душевых»<span class="who">Прага · 500–1000€</span></div>
+    </div>
+    <div class="themeCol glass">
+      <div class="lab">формат программы</div>
+      <h3><span class="dot" style="background:#6C63FF;"></span>Активно, но не лагерь</h3>
+      <div class="themeChips">
+        <span class="chip hot">«5–7 дней»</span><span class="chip">«экскурсии»</span>
+        <span class="chip">«вечером вместе»</span><span class="chip">«утром по желанию»</span>
+        <span class="chip">«не детский лагерь»</span>
+      </div>
+      <div class="themeQuote">«Не превращать поездку в детский лагерь. Несколько активностей, экскурсии, вечером собираться вместе»<span class="who">Кишинёв · 400–550€</span></div>
+    </div>
+    <div class="themeCol glass">
+      <div class="lab">красные флаги</div>
+      <h3><span class="dot" style="background:#F87171;"></span>Чего не хотим</h3>
+      <div class="themeChips">
+        <span class="chip" style="background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.3); color:#F8A7A7;">не +40°</span>
+        <span class="chip" style="background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.3); color:#F8A7A7;">не за все деньги мира</span>
+        <span class="chip" style="background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.3); color:#F8A7A7;">не толпа</span>
+        <span class="chip" style="background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.3); color:#F8A7A7;">не Египет летом</span>
+      </div>
+      <div class="themeQuote">«Дай бог не Египет, там летом +40»<span class="who">Берлин · 500–1000€</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · PROPOSALS -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">09 / 14</div></div>
+  <div class="label">предложения сектора</div>
+  <h2 class="title">Что вы сами предложили — топ-9.</h2>
+
+  <div class="propGrid">
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(108,99,255,0.18);">🏠</div><h4>Снять виллу на всех</h4></div><p>Общее жильё в Турции / на Мальте — затусить, программа, общее пространство.</p><div class="votes">7 упоминаний</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(245,158,11,0.18);">🏔️</div><h4>Микро-выезды + экскурсии</h4></div><p>Не сидим в отеле — вылазки в города, природу, достопримечательности.</p><div class="votes">6 упоминаний</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(52,211,153,0.18);">🍽️</div><h4>Общий ужин каждый день</h4></div><p>Ресторан или дом — все собираются вечером. Утром по желанию.</p><div class="votes">5 упоминаний</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(52,211,153,0.18);">📱</div><h4>Общий чат + голосования</h4></div><p>Прозрачная организация: даты, бюджет, программа — всё в одном месте.</p><div class="votes">4 упоминания</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(167,139,250,0.18);">🎬</div><h4>Снимать влог поездки</h4></div><p>Кто-то монтирует — общий контент сектора.</p><div class="votes">3 упоминания</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(248,113,113,0.18);">🚗</div><h4>Road-trip / кемпинг</h4></div><p>Альтернатива: машина, горы, глэмпинг. У некоторых есть права.</p><div class="votes">3 упоминания</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(108,99,255,0.18);">🎧</div><h4>Диджей-сеты, музыка</h4></div><p>Атмосфера house: завтраки на крыше, закаты, светлые fits.</p><div class="votes">2 упоминания</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(167,139,250,0.18);">🪂</div><h4>Экстрим-день</h4></div><p>Квадроциклы, прыжки с парашютом, активности кроме пляжа.</p><div class="votes">2 упоминания</div></div>
+    <div class="propCard glass"><div class="head"><div class="icon" style="background:rgba(245,158,11,0.18);">🤝</div><h4>Партнёр-турфирма</h4></div><p>У одной из участниц подруга в турфирме — может быть скидка.</p><div class="votes">1 предложение</div></div>
+  </div>
+</section>
+
+<!-- 10 · WHY TURKEY -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">10 / 14</div></div>
+  <div class="label">логика выбора</div>
+  <h2 class="title">Турция выигрывает по всем 5 критериям.</h2>
+
+  <div class="whyList">
+    <div class="whyCard glass lead">
+      <div class="top"><div class="name">🇹🇷 Турция · 24 ★</div><div class="stars">★★★★★</div></div>
+      <div class="row">
+        <div class="it"><div class="l">бюджет 400–600€</div><div class="v ok">✓ влезает</div></div>
+        <div class="it"><div class="l">логистика</div><div class="v ok">прямые рейсы</div></div>
+        <div class="it"><div class="l">погода июль</div><div class="v ok">28–32°</div></div>
+        <div class="it"><div class="l">all-incl. опции</div><div class="v ok">тонна</div></div>
+      </div>
+    </div>
+    <div class="whyCard glass">
+      <div class="top"><div class="name">🇬🇪 Грузия · 13</div><div class="stars" style="color:var(--fg-secondary);">★★★★</div></div>
+      <div class="row">
+        <div class="it"><div class="l">бюджет</div><div class="v ok">✓</div></div>
+        <div class="it"><div class="l">логистика</div><div class="v amb">средняя</div></div>
+        <div class="it"><div class="l">погода</div><div class="v">25–30°</div></div>
+        <div class="it"><div class="l">all-incl.</div><div class="v amb">мало</div></div>
+      </div>
+    </div>
+    <div class="whyCard glass">
+      <div class="top"><div class="name">🇬🇷 Греция · 12</div><div class="stars" style="color:var(--fg-secondary);">★★★½</div></div>
+      <div class="row">
+        <div class="it"><div class="l">бюджет</div><div class="v amb">впритык</div></div>
+        <div class="it"><div class="l">логистика</div><div class="v ok">ок</div></div>
+        <div class="it"><div class="l">погода</div><div class="v">28–32°</div></div>
+        <div class="it"><div class="l">all-incl.</div><div class="v">средне</div></div>
+      </div>
+    </div>
+    <div class="whyCard glass">
+      <div class="top"><div class="name">🇪🇬 Египет · 10</div><div class="stars" style="color:var(--fg-secondary);">★★½</div></div>
+      <div class="row">
+        <div class="it"><div class="l">бюджет</div><div class="v ok">✓ дёшево</div></div>
+        <div class="it"><div class="l">логистика</div><div class="v no">нестабильно</div></div>
+        <div class="it"><div class="l">погода</div><div class="v no">+38–42°</div></div>
+        <div class="it"><div class="l">all-incl.</div><div class="v ok">тонна</div></div>
+      </div>
+    </div>
+    <div class="whyCard glass">
+      <div class="top"><div class="name">🇦🇱 Албания · 9</div><div class="stars" style="color:var(--fg-secondary);">★★★</div></div>
+      <div class="row">
+        <div class="it"><div class="l">бюджет</div><div class="v ok">✓</div></div>
+        <div class="it"><div class="l">логистика</div><div class="v no">пересадки</div></div>
+        <div class="it"><div class="l">погода</div><div class="v">28–31°</div></div>
+        <div class="it"><div class="l">all-incl.</div><div class="v no">мало</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · CONCERNS -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">11 / 14</div></div>
+  <div class="label">риски</div>
+  <h2 class="title">Шесть вещей, которые точно стрельнут.</h2>
+
+  <div class="concernStack">
+    <div class="concernCard glass"><div class="ico">💸</div><div><h4>Бюджетный разрыв</h4><p>От 0 до 2500 €. Решение: 500 € — «ядро», upgrade-апартаменты опционально.</p></div></div>
+    <div class="concernCard glass"><div class="ico">📅</div><div><h4>Даты не у всех совпадут</h4><p>13 человек не покрывают окно 6–13. Дедлайн за 2 месяца, иначе окно 14–20 июля.</p></div></div>
+    <div class="concernCard glass"><div class="ico">🏠</div><div><h4>Жильё = главный конфликт</h4><p>«Не 5 в комнате» vs «дёшево». 2-местные по умолчанию, max 3, отдельные душевые.</p></div></div>
+    <div class="concernCard glass"><div class="ico">🎒</div><div><h4>«Газ» vs «чилл» — два лагеря</h4><p>День/ночь — раздельные программы. Ночные активности опциональны.</p></div></div>
+    <div class="concernCard glass"><div class="ico">✈️</div><div><h4>11 городов отправления</h4><p>Чат с подбором рейсов, окно прилёта ±4 часа, групповой трансфер.</p></div></div>
+    <div class="concernCard glass"><div class="ico">📵</div><div><h4>«Я не знаю» × 7 анкет</h4><p>Голосуем не «куда», а «за/против» рекомендации. Большинством.</p></div></div>
+  </div>
+</section>
+
+<!-- 12 · ROADMAP -->
+<section class="page">
+  <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">12 / 14</div></div>
+  <div class="label">итог</div>
+  <h2 class="title">Турция · 6–13 июля · 500€/чел.</h2>
+
+  <div class="recoBig">
+    <div class="flag">🇹🇷</div>
+    <div class="country">Турция</div>
+    <div class="where">Анталия / Сиде / Кемер · побережье · 7 дней</div>
+  </div>
+
+  <div class="recoStats">
+    <div class="recoStat glass"><div class="lab">когда</div><div class="v">6–13<small>июля</small></div></div>
+    <div class="recoStat glass"><div class="lab">бюджет</div><div class="v">≈500<small>€/чел</small></div></div>
+    <div class="recoStat glass"><div class="lab">людей в окне</div><div class="v">47<small>из 60</small></div></div>
+    <div class="recoStat glass"><div class="lab">формат</div><div class="v" style="font-size:14px; line-height:1.2; font-weight:600; letter-spacing:-0.3px;">вилла/отель</div></div>
+  </div>
+
+  <h3 style="font-size:18px; font-weight:700; letter-spacing:-0.4px; margin:28px 0 0 0;">Что делаем дальше</h3>
+  <div class="roadmap">
+    <div class="step"><div class="n">1</div><div style="flex:1;"><h4>Создаём общий чат</h4><p>Все 60 человек. Закрепляем презентацию.</p><div class="when">эта неделя</div></div></div>
+    <div class="step"><div class="n">2</div><div style="flex:1;"><h4>Голосование: ✓ / ✗</h4><p>«За/против Турции 6–13 июля». 48 часов.</p><div class="when">+3 дня</div></div></div>
+    <div class="step"><div class="n">3</div><div style="flex:1;"><h4>Подбор жилья · 3 варианта</h4><p>Вилла на 30+ / 2 виллы / отель. Голосуем.</p><div class="when">+1 неделя</div></div></div>
+    <div class="step"><div class="n">4</div><div style="flex:1;"><h4>Сбор предоплаты + бронь</h4><p>Закрепляем номера. До этого — без билетов.</p><div class="when">+2 недели</div></div></div>
+    <div class="step"><div class="n">5</div><div style="flex:1;"><h4>Программа на 7 дней</h4><p>Пляж, экскурсии, общий ужин, ночной движ.</p><div class="when">июнь</div></div></div>
+  </div>
+</section>
+
+<!-- 13 · CTA -->
+<section class="page s13">
+  <div class="bgOrb"></div>
+  <div class="inner">
+    <div class="topBar"><div class="brandRow" style="margin:0 auto;"><div class="orb"></div><div class="name">Lumi</div></div></div>
+    <div class="label">осталось одно</div>
+    <h1 class="question">Голосуем <span class="accent">за</span>?<br/>Турция 6–13 июля.</h1>
+    <div class="sub">Если 40+ человек скажут «да» — стартуем подбор жилья на следующей неделе. Если меньше — пересматриваем top-3.</div>
+    <div class="meta">
+      <span class="pill mint">✓ за — пишем «газ»</span>
+      <span class="pill coral">✗ против — пишем «нет»</span>
+      <span class="pill lav">💬 идеи — в общий чат</span>
+    </div>
+    <div class="pageno" style="margin-top:32px;">13 / 14</div>
+  </div>
+</section>
+
+<!-- 14 · LUMI -->
+<section class="page s14">
+  <div class="bgOrb"></div>
+  <div class="inner">
+    <div class="topBar"><div class="brandRow"><div class="orb"></div><div class="name">Lumi</div></div><div class="pageno">14 / 14</div></div>
+    <div class="label" style="margin-top:8px;">опрос и презентация при поддержке</div>
+    <div class="lumi">Lumi</div>
+    <div class="tag">AI-трекер расходов · твой финансовый друг</div>
+    <div class="pitch">Lumi помогает <b>оптимизировать расходы</b> и реально доехать до этой поездки без боли. Чем меньше утечек — тем больше бюджет на Турцию.</div>
+
+    <div class="steps">
+      <div class="step3 glass"><div class="lab">шаг 1</div><div class="t">Оплачиваешь Apple Pay</div><div class="d">в магазинах, кафе, ресторанах — как обычно</div></div>
+      <div class="step3 glass"><div class="lab">шаг 2</div><div class="t">Lumi сам всё пишет</div><div class="d">трата падает в трекер автоматически — нулевое усилие</div></div>
+      <div class="step3 win glass"><div class="lab">шаг 3</div><div class="t">+€500 к поездке</div><div class="d">видишь утечки → режешь → расслабляешься на пляже</div></div>
+    </div>
+
+    <a class="appstore" href="https://apps.apple.com/us/app/lumi-invest-grow-wealth/id6754805457">
+      <div>
+        <div class="l1">Скачать в</div>
+        <div class="l2">App&nbsp;Store</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<script>
+  const cal = document.getElementById('cal');
+  const dow = ['пн','вт','ср','чт','пт','сб','вс'];
+  dow.forEach(d => { const el=document.createElement('div'); el.className='calDay dow'; el.innerHTML=`<span>${d}</span>`; cal.appendChild(el); });
+  for (let i=0;i<2;i++){ const el=document.createElement('div'); el.className='calDay empty'; cal.appendChild(el); }
+  const avail = {
+    1:65,2:62,3:65,4:67,5:65,6:78,7:78,8:78,9:75,10:78,11:75,12:75,13:75,
+    14:67,15:65,16:55,17:55,18:57,19:55,20:65,
+    21:35,22:30,23:30,24:30,25:30,26:30,27:30,28:30,29:30,30:30,31:30
+  };
+  const recommended = new Set([6,7,8,9,10,11,12,13]);
+  for (let d=1; d<=31; d++){
+    const el = document.createElement('div');
+    el.className = 'calDay';
+    const pct = avail[d];
+    if (recommended.has(d)) el.classList.add('peak');
+    else if (pct >= 60) el.classList.add('window');
+    el.innerHTML = `<div class="num">${d}</div><div class="pct">${pct}%</div>`;
+    cal.appendChild(el);
+  }
+</script>
+</body>
+</html>
