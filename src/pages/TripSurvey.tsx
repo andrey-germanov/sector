@@ -215,6 +215,14 @@ const TripSurvey = () => {
                 <>
                   <br /><br />
                   Для брони — напиши <a className="tg-link" href="https://t.me/stx_604" target="_blank" rel="noreferrer">@stx_604</a> по поводу предоплаты {prepayPercent}%.
+                  <br />
+                  Срок:{' '}
+                  <strong>
+                    {data.departureGroup === 'chisinau'
+                      ? 'до 20 мая'
+                      : 'в течение 30 часов после брони'}
+                  </strong>
+                  .
                 </>
               )}
             </p>
@@ -486,6 +494,13 @@ const TripSurvey = () => {
                 <div className="payment-card">
                   <div className="payment-headline">
                     Предоплата: <strong>{prepayPercent}%</strong> от стоимости
+                  </div>
+                  <div className="payment-deadline">
+                    {data.departureGroup === 'chisinau' ? (
+                      <>Срок: <strong>до 20 мая</strong></>
+                    ) : (
+                      <>Срок: <strong>в течение 30 часов</strong> после брони</>
+                    )}
                   </div>
                   <ul className="payment-list">
                     <li>Возврат возможен за 2 недели до вылета</li>

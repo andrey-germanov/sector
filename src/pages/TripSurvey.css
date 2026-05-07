@@ -560,7 +560,21 @@
   color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.payment-deadline {
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  margin-bottom: 0.85rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(255, 0, 5, 0.08);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-red);
+}
+
+.payment-deadline strong {
+  color: var(--accent-red);
 }
 
 .payment-list {
