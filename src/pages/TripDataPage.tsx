@@ -16,7 +16,7 @@ interface TripSurveyData {
   wishes: string
   suggestions: string
   createdAt: string
-  timestamp?: any
+  timestamp?: any;
 }
 
 const PASSWORD = 'Sektor2026!Data'

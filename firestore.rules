@@ -41,6 +41,39 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // Правила для коллекции sectorTripBooking (Sector Trip 2026)
+    match /sectorTripBooking/{bookingId} {
+      allow create: if request.resource.data.telegram is string
+                   && request.resource.data.telegram.size() > 0
+                   && request.resource.data.telegram.size() <= 100
+                   && request.resource.data.fullName is string
+                   && request.resource.data.fullName.size() > 0
+                   && request.resource.data.fullName.size() <= 200
+                   && request.resource.data.age is string
+                   && request.resource.data.age.size() <= 5
+                   && request.resource.data.sector is string
+                   && request.resource.data.sector.size() <= 100
+                   && request.resource.data.departureCity is string
+                   && request.resource.data.departureCity.size() <= 100
+                   && request.resource.data.departureGroup is string
+                   && request.resource.data.tripDates is string
+                   && request.resource.data.roomType is string
+                   && request.resource.data.roommateTelegram is string
+                   && request.resource.data.roommateTelegram.size() <= 200
+                   && request.resource.data.activities is list
+                   && request.resource.data.activitiesOther is string
+                   && request.resource.data.activitiesOther.size() <= 300
+                   && request.resource.data.helpOrganize is list
+                   && request.resource.data.helpOrganizeOther is string
+                   && request.resource.data.helpOrganizeOther.size() <= 300
+                   && request.resource.data.willPay is string
+                   && request.resource.data.paymentNotes is string
+                   && request.resource.data.paymentNotes.size() <= 300;
+
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
     // Блокируем все остальные коллекции
     match /{document=**} {
       allow read, write: if false;

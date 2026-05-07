@@ -248,6 +248,291 @@
   margin-top: 0.5rem;
 }
 
+/* Field label */
+.field-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.field-label:first-child {
+  margin-top: 0;
+}
+
+/* Two-column row */
+.row-2 {
+  display: flex;
+  gap: 1rem;
+}
+
+.row-2-field {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Chip grid */
+.chip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.chip {
+  padding: 0.7rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
+}
+
+.chip.active {
+  border-color: var(--accent-red);
+  background: rgba(255, 0, 5, 0.12);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 3px rgba(255, 0, 5, 0.1);
+}
+
+/* Hotel card */
+.hotel-card {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.hotel-name {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hotel-stars {
+  color: #FCC75A;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.hotel-location {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.hotel-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.hotel-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.hotel-highlights li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.hotel-highlights li::before {
+  content: '·';
+  position: absolute;
+  left: 0.35rem;
+  top: -2px;
+  color: var(--accent-red);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.hotel-link {
+  display: inline-block;
+  color: var(--accent-red);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.hotel-link:hover {
+  text-decoration: underline;
+}
+
+/* Dates card */
+.dates-card {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.dates-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dates-row:last-child {
+  border-bottom: none;
+}
+
+.dates-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.dates-value {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.dates-value.strong {
+  color: var(--accent-red);
+}
+
+/* Check list */
+.check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.check-item:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
+}
+
+.check-item.active {
+  border-color: var(--accent-red);
+  background: rgba(255, 0, 5, 0.1);
+  color: var(--text-primary);
+}
+
+.check-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.check-item.active .check-box {
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+/* Payment card */
+.payment-card {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255, 0, 5, 0.25);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.payment-headline {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.payment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.payment-list li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.payment-list li::before {
+  content: '·';
+  position: absolute;
+  left: 0.4rem;
+  color: var(--accent-red);
+  font-weight: 700;
+}
+
+.payment-cta {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tg-link {
+  color: var(--accent-red);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tg-link:hover {
+  text-decoration: underline;
+}
+
 /* Textarea */
 .textarea-wrapper {
   position: relative;
@@ -455,6 +740,15 @@
 
   .calendar-cell {
     font-size: 0.8rem;
+  }
+
+  .chip-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .row-2 {
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .nav-btn {

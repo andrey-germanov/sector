@@ -398,6 +398,9 @@
 
 .st-mobile .topBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 
+.heroOrb {
+  z-index: -1;
+}
 /* 1 · TITLE */
 .st-mobile .s1 {
   min-height: 100vh; padding: 60px 20px 40px;

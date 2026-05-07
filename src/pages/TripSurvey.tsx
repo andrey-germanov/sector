@@ -3,24 +3,58 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../config/firebase'
 import './TripSurvey.css'
 
-interface SurveyData {
-  city: string
-  budgetFrom: string
-  budgetTo: string
-  suggestedLocation: string
-  canJuly: 'yes' | 'no' | ''
-  selectedDates: number[]
-  alternativeDates: string
-  expectations: string
-  wishes: string
-  suggestions: string
+type DepartureGroup = 'chisinau' | 'vilnius' | ''
+type RoomType = 'double' | 'triple' | ''
+
+interface BookingData {
+  telegram: string
+  fullName: string
+  age: string
+  sector: string
+  departureCity: string
+  departureGroup: DepartureGroup
+  roomType: RoomType
+  roommateTelegram: string
+  activities: string[]
+  activitiesOther: string
+  helpOrganize: string[]
+  helpOrganizeOther: string
+  willPay: 'yes' | 'no' | ''
+  paymentNotes: string
 }
 
-const JULY_DAYS = Array.from({ length: 20 }, (_, i) => i + 1)
-const DAY_NAMES = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+const CITY_OPTIONS: { label: string; value: string; group: DepartureGroup }[] = [
+  { label: 'Кишинёв', value: 'Кишинёв', group: 'chisinau' },
+  { label: 'Одесса', value: 'Одесса', group: 'chisinau' },
+  { label: 'Киев', value: 'Киев', group: 'chisinau' },
+  { label: 'Вильнюс', value: 'Вильнюс', group: 'vilnius' },
+  { label: 'Рига', value: 'Рига', group: 'vilnius' },
+  { label: 'Таллин', value: 'Таллин', group: 'vilnius' },
+]
 
-// July 1, 2025 is Tuesday (index 1 in 0-based Monday week)
-const JULY_1_OFFSET = 1 // Tuesday
+const ACTIVITIES = ['Футбол', 'Волейбол', 'Аквапарк / водные активности', 'Вечеринки / диджей-сеты']
+const HELP_OPTIONS = [
+  'Спортивные активности',
+  'Вечеринки и музыку',
+  'Экскурсии / поездки',
+  'Фото/видео контент',
+]
+
+const HOTEL = {
+  name: 'Vita Silva Hotel',
+  stars: 5,
+  location: 'Кызылот, Турция · 2.2 км до пляжа Кызылот',
+  bookingUrl: 'https://www.booking.com/Share-4JCcsq',
+  description:
+    '5★ отель в Кызылоте, в 2.2 км от Общественного пляжа. Сезонный открытый бассейн, сад, ресторан, бар, бесплатная парковка и Wi-Fi. Завтрак «шведский стол» (есть вегетарианский и веганский варианты).',
+  highlights: [
+    'Оздоровительный центр: сауна, хаммам',
+    'Бильярд, настольный теннис, дартс',
+    'Кондиционер, сейф и ТВ в каждом номере',
+    'Круглосуточная стойка регистрации, обмен валют, аренда авто',
+    'Аэропорт Газипаша-Аланья — 81 км',
+  ],
+}
 
 const TOTAL_STEPS = 7
 
@@ -29,55 +63,87 @@ const TripSurvey = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState('')
-  const [data, setData] = useState<SurveyData>({
-    city: '',
-    budgetFrom: '',
-    budgetTo: '',
-    suggestedLocation: '',
-    canJuly: '',
-    selectedDates: [],
-    alternativeDates: '',
-    expectations: '',
-    wishes: '',
-    suggestions: '',
+  const [data, setData] = useState<BookingData>({
+    telegram: '',
+    fullName: '',
+    age: '',
+    sector: '',
+    departureCity: '',
+    departureGroup: '',
+    roomType: '',
+    roommateTelegram: '',
+    activities: [],
+    activitiesOther: '',
+    helpOrganize: [],
+    helpOrganizeOther: '',
+    willPay: '',
+    paymentNotes: '',
   })
 
-  const updateField = <K extends keyof SurveyData>(field: K, value: SurveyData[K]) => {
+  const updateField = <K extends keyof BookingData>(field: K, value: BookingData[K]) => {
     setData(prev => ({ ...prev, [field]: value }))
   }
 
-  const toggleDate = (day: number) => {
+  const setCity = (value: string) => {
+    const opt = CITY_OPTIONS.find(o => o.value === value)
     setData(prev => ({
       ...prev,
-      selectedDates: prev.selectedDates.includes(day)
-        ? prev.selectedDates.filter(d => d !== day)
-        : [...prev.selectedDates, day].sort((a, b) => a - b),
+      departureCity: value,
+      departureGroup: opt?.group ?? '',
     }))
   }
 
+  const toggleListItem = (field: 'activities' | 'helpOrganize', value: string) => {
+    setData(prev => ({
+      ...prev,
+      [field]: prev[field].includes(value)
+        ? prev[field].filter(v => v !== value)
+        : [...prev[field], value],
+    }))
+  }
+
+  const tripDates =
+    data.departureGroup === 'chisinau'
+      ? '07.07 — 13.07 (6 ночей)'
+      : data.departureGroup === 'vilnius'
+      ? '06.07 — 11.07 (5 ночей)'
+      : ''
+
+  const prepayPercent =
+    data.departureGroup === 'chisinau' ? 10 : data.departureGroup === 'vilnius' ? 20 : 0
+
   const canProceed = (): boolean => {
     switch (step) {
-      case 1: return data.city.trim().length > 0
-      case 2: return data.budgetFrom.trim().length > 0 && data.budgetTo.trim().length > 0
-      case 3: return data.suggestedLocation.trim().length > 0
+      case 1:
+        return (
+          data.telegram.trim().length > 0 &&
+          data.fullName.trim().length > 0 &&
+          data.age.trim().length > 0 &&
+          data.sector.trim().length > 0
+        )
+      case 2:
+        return true
+      case 3:
+        return (
+          data.departureCity.length > 0 &&
+          data.roomType.length > 0 &&
+          data.roommateTelegram.trim().length > 0
+        )
       case 4:
-        if (data.canJuly === '') return false
-        if (data.canJuly === 'yes') return data.selectedDates.length > 0
-        return data.alternativeDates.trim().length > 0
-      case 5: return data.expectations.trim().length > 0
-      case 6: return data.wishes.trim().length > 0
-      case 7: return data.suggestions.trim().length > 0
-      default: return false
+        return data.departureGroup !== ''
+      case 5:
+        return data.activities.length > 0 || data.activitiesOther.trim().length > 0
+      case 6:
+        return data.helpOrganize.length > 0 || data.helpOrganizeOther.trim().length > 0
+      case 7:
+        return data.willPay !== ''
+      default:
+        return false
     }
   }
 
-  const handleNext = () => {
-    if (step < TOTAL_STEPS) setStep(step + 1)
-  }
-
-  const handleBack = () => {
-    if (step > 1) setStep(step - 1)
-  }
+  const handleNext = () => { if (step < TOTAL_STEPS) setStep(step + 1) }
+  const handleBack = () => { if (step > 1) setStep(step - 1) }
 
   const handleSubmit = async () => {
     if (!canProceed()) return
@@ -85,32 +151,33 @@ const TripSurvey = () => {
     setError('')
 
     try {
-      await addDoc(collection(db, 'tripSurvey'), {
-        city: data.city.trim(),
-        budgetFrom: data.budgetFrom.trim(),
-        budgetTo: data.budgetTo.trim(),
-        suggestedLocation: data.suggestedLocation.trim(),
-        canJuly: data.canJuly,
-        selectedDates: data.canJuly === 'yes' ? data.selectedDates : [],
-        alternativeDates: data.canJuly === 'no' ? data.alternativeDates.trim() : '',
-        expectations: data.expectations.trim(),
-        wishes: data.wishes.trim(),
-        suggestions: data.suggestions.trim(),
+      await addDoc(collection(db, 'sectorTripBooking'), {
+        telegram: data.telegram.trim(),
+        fullName: data.fullName.trim(),
+        age: data.age.trim(),
+        sector: data.sector.trim(),
+        departureCity: data.departureCity,
+        departureGroup: data.departureGroup,
+        tripDates,
+        roomType: data.roomType,
+        roommateTelegram: data.roommateTelegram.trim(),
+        activities: data.activities,
+        activitiesOther: data.activitiesOther.trim(),
+        helpOrganize: data.helpOrganize,
+        helpOrganizeOther: data.helpOrganizeOther.trim(),
+        willPay: data.willPay,
+        prepayPercent,
+        paymentNotes: data.paymentNotes.trim(),
         timestamp: serverTimestamp(),
         createdAt: new Date().toISOString(),
       })
       setIsSubmitted(true)
     } catch (err) {
-      console.error('Error submitting survey:', err)
+      console.error('Error submitting booking:', err)
       setError('Произошла ошибка при отправке. Попробуйте ещё раз.')
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  const formatSelectedDates = (): string => {
-    if (data.selectedDates.length === 0) return ''
-    return data.selectedDates.map(d => `${d} июля`).join(', ')
   }
 
   if (isSubmitted) {
@@ -120,7 +187,15 @@ const TripSurvey = () => {
           <div className="success-screen">
             <div className="success-icon">&#10003;</div>
             <h2 className="success-title">Спасибо!</h2>
-            <p className="success-text">Ваши ответы успешно отправлены. Мы учтём их при планировании поездки.</p>
+            <p className="success-text">
+              Мы получили твою заявку.
+              {data.willPay === 'yes' && (
+                <>
+                  <br /><br />
+                  Для брони — напиши <a className="tg-link" href="https://t.me/stx_604" target="_blank" rel="noreferrer">@stx_604</a> по поводу предоплаты {prepayPercent}%.
+                </>
+              )}
+            </p>
           </div>
         </div>
       </div>
@@ -131,8 +206,8 @@ const TripSurvey = () => {
     <div className="trip-survey-page">
       <div className="survey-container">
         <div className="survey-header">
-          <h1 className="survey-title">Поездка на море</h1>
-          <p className="survey-subtitle">Уникальная программа от старших</p>
+          <h1 className="survey-title">Sector Trip 2026</h1>
+          <p className="survey-subtitle">Бронь и детали поездки</p>
         </div>
 
         <div className="progress-bar">
@@ -143,189 +218,269 @@ const TripSurvey = () => {
         <div className="step-content">
           {step === 1 && (
             <div className="step">
-              <h2 className="step-title">Твой город?</h2>
+              <h2 className="step-title">Контактные данные</h2>
+              <p className="step-hint">Заполни как в загранпаспорте — это пойдёт в бронь.</p>
+
+              <label className="field-label">Telegram</label>
               <input
                 type="text"
                 className="survey-input"
-                value={data.city}
-                onChange={e => updateField('city', e.target.value)}
-                placeholder="Например: Кишинёв"
+                value={data.telegram}
+                onChange={e => updateField('telegram', e.target.value)}
+                placeholder="@username"
                 autoFocus
               />
+
+              <label className="field-label">Имя и фамилия (как в загранпаспорте)</label>
+              <input
+                type="text"
+                className="survey-input"
+                value={data.fullName}
+                onChange={e => updateField('fullName', e.target.value)}
+                placeholder="IVAN IVANOV"
+              />
+
+              <div className="row-2">
+                <div className="row-2-field">
+                  <label className="field-label">Возраст</label>
+                  <input
+                    type="number"
+                    className="survey-input"
+                    value={data.age}
+                    onChange={e => updateField('age', e.target.value)}
+                    placeholder="20"
+                    min="0"
+                    max="99"
+                  />
+                </div>
+                <div className="row-2-field">
+                  <label className="field-label">Из какого ты сектора?</label>
+                  <input
+                    type="text"
+                    className="survey-input"
+                    value={data.sector}
+                    onChange={e => updateField('sector', e.target.value)}
+                    placeholder="Например: 4"
+                  />
+                </div>
+              </div>
             </div>
           )}
 
           {step === 2 && (
             <div className="step">
-              <h2 className="step-title">Какой бюджет на поездку?</h2>
-              <p className="step-hint">Укажите диапазон в евро</p>
-              <div className="budget-row">
-                <div className="budget-field">
-                  <label className="budget-label">От</label>
-                  <input
-                    type="number"
-                    className="survey-input"
-                    value={data.budgetFrom}
-                    onChange={e => updateField('budgetFrom', e.target.value)}
-                    placeholder="100"
-                    min="0"
-                    autoFocus
-                  />
+              <h2 className="step-title">Отель</h2>
+              <p className="step-hint">Куда едем — короткая инфа</p>
+
+              <div className="hotel-card">
+                <div className="hotel-name">
+                  {HOTEL.name} <span className="hotel-stars">{'★'.repeat(HOTEL.stars)}</span>
                 </div>
-                <div className="budget-divider">—</div>
-                <div className="budget-field">
-                  <label className="budget-label">До</label>
-                  <input
-                    type="number"
-                    className="survey-input"
-                    value={data.budgetTo}
-                    onChange={e => updateField('budgetTo', e.target.value)}
-                    placeholder="500"
-                    min="0"
-                  />
-                </div>
+                <div className="hotel-location">{HOTEL.location}</div>
+                <div className="hotel-desc">{HOTEL.description}</div>
+                <ul className="hotel-highlights">
+                  {HOTEL.highlights.map(h => (
+                    <li key={h}>{h}</li>
+                  ))}
+                </ul>
+                <a className="hotel-link" href={HOTEL.bookingUrl} target="_blank" rel="noreferrer">
+                  Открыть на Booking.com →
+                </a>
               </div>
             </div>
           )}
 
           {step === 3 && (
             <div className="step">
-              <h2 className="step-title">Предложите свою локацию</h2>
-              <p className="step-hint">Куда бы вы хотели поехать?</p>
+              <h2 className="step-title">Откуда летишь и в какой комнате</h2>
+
+              <label className="field-label">Из какого города вылетаешь?</label>
+              <div className="chip-grid">
+                {CITY_OPTIONS.map(opt => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    className={`chip ${data.departureCity === opt.value ? 'active' : ''}`}
+                    onClick={() => setCity(opt.value)}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+
+              <label className="field-label">Тип номера</label>
+              <div className="july-choice">
+                <button
+                  type="button"
+                  className={`choice-btn ${data.roomType === 'double' ? 'active' : ''}`}
+                  onClick={() => updateField('roomType', 'double')}
+                >
+                  2-местный
+                </button>
+                <button
+                  type="button"
+                  className={`choice-btn ${data.roomType === 'triple' ? 'active' : ''}`}
+                  onClick={() => updateField('roomType', 'triple')}
+                >
+                  3-местный
+                </button>
+              </div>
+
+              <label className="field-label">Telegram соседей по комнате</label>
               <input
                 type="text"
                 className="survey-input"
-                value={data.suggestedLocation}
-                onChange={e => updateField('suggestedLocation', e.target.value)}
-                placeholder="Например: Египет, Турция, Одесса..."
-                autoFocus
+                value={data.roommateTelegram}
+                onChange={e => updateField('roommateTelegram', e.target.value)}
+                placeholder={data.roomType === 'triple' ? '@user1, @user2' : '@username'}
               />
-              <p className="step-hint" style={{opacity: 0.5, paddingTop: 12}}>Про Одессу шучу)</p>
-              </div>
+              <p className="step-hint" style={{ marginTop: 8, opacity: 0.65 }}>
+                Указывай тех, с кем точно договорился
+              </p>
+            </div>
           )}
 
           {step === 4 && (
             <div className="step">
-              <h2 className="step-title">Планы на июль (1–20)</h2>
-              <p className="step-hint">Сможете ли вы в этот отрезок времени?</p>
-
-              <div className="july-choice">
-                <button
-                  className={`choice-btn ${data.canJuly === 'yes' ? 'active' : ''}`}
-                  onClick={() => updateField('canJuly', 'yes')}
-                >
-                  Да, смогу
-                </button>
-                <button
-                  className={`choice-btn ${data.canJuly === 'no' ? 'active' : ''}`}
-                  onClick={() => updateField('canJuly', 'no')}
-                >
-                  Нет, не смогу
-                </button>
-              </div>
-
-              {data.canJuly === 'yes' && (
-                <div className="calendar-section">
-                  <p className="calendar-hint">Выберите даты, когда вы свободны:</p>
-                  <div className="mini-calendar">
-                    <div className="calendar-header-row">
-                      {DAY_NAMES.map(d => (
-                        <div key={d} className="calendar-day-name">{d}</div>
-                      ))}
+              <h2 className="step-title">Даты поездки</h2>
+              {data.departureGroup === '' ? (
+                <p className="step-hint">Сначала выбери город вылета на предыдущем шаге.</p>
+              ) : (
+                <>
+                  <div className="dates-card">
+                    <div className="dates-row">
+                      <span className="dates-label">Город вылета</span>
+                      <span className="dates-value">{data.departureCity}</span>
                     </div>
-                    <div className="calendar-grid">
-                      {Array.from({ length: JULY_1_OFFSET }).map((_, i) => (
-                        <div key={`empty-${i}`} className="calendar-cell empty" />
-                      ))}
-                      {JULY_DAYS.map(day => (
-                        <div
-                          key={day}
-                          className={`calendar-cell ${data.selectedDates.includes(day) ? 'selected' : ''}`}
-                          onClick={() => toggleDate(day)}
-                        >
-                          {day}
-                        </div>
-                      ))}
+                    <div className="dates-row">
+                      <span className="dates-label">Даты</span>
+                      <span className="dates-value strong">{tripDates}</span>
                     </div>
                   </div>
-                  {data.selectedDates.length > 0 && (
-                    <div className="selected-summary">
-                      Выбрано: {formatSelectedDates()}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {data.canJuly === 'no' && (
-                <div className="alternative-section">
-                  <p className="calendar-hint">Предложите свои даты:</p>
-                  <input
-                    type="text"
-                    className="survey-input"
-                    value={data.alternativeDates}
-                    onChange={e => updateField('alternativeDates', e.target.value)}
-                    placeholder="Например: 21–31 июля, август..."
-                    autoFocus
-                  />
-                </div>
+                  <p className="step-hint" style={{ marginTop: 16 }}>
+                    На следующих шагах укажи: в чём хочешь поучаствовать и что можешь помочь организовать.
+                  </p>
+                </>
               )}
             </div>
           )}
 
           {step === 5 && (
             <div className="step">
-              <h2 className="step-title">Какие ожидания от поездки?</h2>
-              <div className="textarea-wrapper">
-                <textarea
-                  className="survey-textarea"
-                  value={data.expectations}
-                  onChange={e => {
-                    if (e.target.value.length <= 100) updateField('expectations', e.target.value)
-                  }}
-                  placeholder="Расскажите, чего вы ждёте от поездки..."
-                  rows={4}
-                  autoFocus
-                />
-                <span className="char-count">{data.expectations.length}/100</span>
+              <h2 className="step-title">В чём хочешь участвовать?</h2>
+              <p className="step-hint">Можно выбрать несколько</p>
+
+              <div className="check-list">
+                {ACTIVITIES.map(item => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={`check-item ${data.activities.includes(item) ? 'active' : ''}`}
+                    onClick={() => toggleListItem('activities', item)}
+                  >
+                    <span className="check-box">{data.activities.includes(item) ? '✓' : ''}</span>
+                    <span>{item}</span>
+                  </button>
+                ))}
               </div>
+
+              <label className="field-label" style={{ marginTop: 16 }}>Что-то ещё (необязательно)</label>
+              <input
+                type="text"
+                className="survey-input"
+                value={data.activitiesOther}
+                onChange={e => updateField('activitiesOther', e.target.value)}
+                placeholder="Своё предложение..."
+              />
             </div>
           )}
 
           {step === 6 && (
             <div className="step">
-              <h2 className="step-title">Пожелания</h2>
-              <div className="textarea-wrapper">
-                <textarea
-                  className="survey-textarea"
-                  value={data.wishes}
-                  onChange={e => {
-                    if (e.target.value.length <= 100) updateField('wishes', e.target.value)
-                  }}
-                  placeholder="Ваши пожелания к поездке..."
-                  rows={4}
-                  autoFocus
-                />
-                <span className="char-count">{data.wishes.length}/100</span>
+              <h2 className="step-title">Что можешь помочь организовать?</h2>
+              <p className="step-hint">Можно выбрать несколько</p>
+
+              <div className="check-list">
+                {HELP_OPTIONS.map(item => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={`check-item ${data.helpOrganize.includes(item) ? 'active' : ''}`}
+                    onClick={() => toggleListItem('helpOrganize', item)}
+                  >
+                    <span className="check-box">{data.helpOrganize.includes(item) ? '✓' : ''}</span>
+                    <span>{item}</span>
+                  </button>
+                ))}
               </div>
+
+              <label className="field-label" style={{ marginTop: 16 }}>Что-то ещё (необязательно)</label>
+              <input
+                type="text"
+                className="survey-input"
+                value={data.helpOrganizeOther}
+                onChange={e => updateField('helpOrganizeOther', e.target.value)}
+                placeholder="Например: видео-обзор поездки..."
+              />
             </div>
           )}
 
           {step === 7 && (
             <div className="step">
-              <h2 className="step-title">Предложения</h2>
-              <div className="textarea-wrapper">
-                <textarea
-                  className="survey-textarea"
-                  value={data.suggestions}
-                  onChange={e => {
-                    if (e.target.value.length <= 100) updateField('suggestions', e.target.value)
-                  }}
-                  placeholder="Ваши предложения..."
-                  rows={4} 
-                  autoFocus
-                />
-                <span className="char-count">{data.suggestions.length}/100</span>
+              <h2 className="step-title">Готов перевести деньги?</h2>
+
+              <div className="july-choice">
+                <button
+                  type="button"
+                  className={`choice-btn ${data.willPay === 'yes' ? 'active' : ''}`}
+                  onClick={() => updateField('willPay', 'yes')}
+                >
+                  Да, готов
+                </button>
+                <button
+                  type="button"
+                  className={`choice-btn ${data.willPay === 'no' ? 'active' : ''}`}
+                  onClick={() => updateField('willPay', 'no')}
+                >
+                  Пока не готов
+                </button>
               </div>
+
+              {data.willPay === 'yes' && data.departureGroup !== '' && (
+                <div className="payment-card">
+                  <div className="payment-headline">
+                    Предоплата: <strong>{prepayPercent}%</strong> от стоимости
+                  </div>
+                  <ul className="payment-list">
+                    <li>Возврат возможен за 2 недели до вылета</li>
+                    <li>Это нужно потому, что цена сильно скачет</li>
+                    <li>Кишинёв — 10%, Вильнюс — 20%</li>
+                  </ul>
+                  <div className="payment-cta">
+                    По поводу предоплаты пиши{' '}
+                    <a className="tg-link" href="https://t.me/stx_604" target="_blank" rel="noreferrer">
+                      @stx_604
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {data.willPay === 'yes' && data.departureGroup === '' && (
+                <div className="payment-card">
+                  <div className="payment-headline">Сначала выбери город вылета (шаг 3)</div>
+                </div>
+              )}
+
+              <label className="field-label" style={{ marginTop: 16 }}>Комментарий (необязательно)</label>
+              <textarea
+                className="survey-textarea"
+                value={data.paymentNotes}
+                onChange={e => {
+                  if (e.target.value.length <= 200) updateField('paymentNotes', e.target.value)
+                }}
+                placeholder="Что-то важное по оплате..."
+                rows={3}
+              />
             </div>
           )}
         </div>

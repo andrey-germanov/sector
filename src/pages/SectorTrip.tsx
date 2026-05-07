@@ -72,9 +72,9 @@ const SectorTrip = () => {
           <h1>СЕКТОР<br /><span className="gloss">ВЫЕЗД</span></h1>
           <div className="sub">Куда едем, на сколько, в какие даты — и что вы все хотите от этой поездки. Собрали данные воедино.</div>
           <div className="meta">
-            <span className="pill">📊 60 анкет</span>
-            <span className="pill lav">🏖 11 направлений</span>
-            <span className="pill mint">📅 окно 1–20 июля</span>
+            <span className="pill">📊 {" "} 60 анкет</span>
+            <span className="pill lav">🏖 {" "} 11 направлений</span>
+            <span className="pill mint">📅 {" "} окно 1–20 июля</span>
           </div>
         </section>
 
@@ -648,9 +648,9 @@ const SectorTrip = () => {
             <h1 className="question">Голосуем <span className="accent">за</span>?<br />Турция 6–13 июля.</h1>
             <div className="sub" style={{ marginLeft: 'auto', marginRight: 'auto' }}>Если 40+ человек скажут «да» — стартуем подбор жилья на следующей неделе.<br />Если меньше — пересматриваем top-3 (Грузия, Греция, Албания).</div>
             <div className="meta" style={{ justifyContent: 'center' }}>
-              <span className="pill mint">✓ за — пишем «газ»</span>
-              <span className="pill coral">✗ против — пишем «нет»</span>
-              <span className="pill lav">💬 идеи — в общий чат</span>
+              <span className="pill mint">✓ {" "} за — пишем «газ»</span>
+              <span className="pill coral">✗ {" "} против — пишем «нет»</span>
+              <span className="pill lav">💬 {" "} идеи — в общий чат</span>
             </div>
           </div>
         </section>
@@ -731,9 +731,9 @@ const SectorTrip = () => {
             <h1>СЕКТОР<br /><span className="gloss">ВЫЕЗД</span></h1>
             <div className="sub">Куда едем, на сколько, в какие даты — и что вы все хотите от этой поездки. Собрали данные воедино.</div>
             <div className="meta">
-              <span className="pill">📊 60 анкет</span>
-              <span className="pill lav">🏖 11 направлений</span>
-              <span className="pill mint">📅 1–20 июля</span>
+              <span className="pill">📊 {" "} 60 анкет</span>
+              <span className="pill lav">🏖 {" "} 11 направлений</span>
+              <span className="pill mint">📅 {" "} 1–20 июля</span>
             </div>
           </div>
         </section>
@@ -1109,9 +1109,9 @@ const SectorTrip = () => {
             <h1 className="question">Голосуем <span className="accent">за</span>?<br />Турция 6–13 июля.</h1>
             <div className="sub">Если 40+ человек скажут «да» — стартуем подбор жилья на следующей неделе. Если меньше — пересматриваем top-3.</div>
             <div className="meta">
-              <span className="pill mint">✓ за — пишем «газ»</span>
-              <span className="pill coral">✗ против — пишем «нет»</span>
-              <span className="pill lav">💬 идеи — в общий чат</span>
+              <span className="pill mint">✓ {" "} за — пишем «газ»</span>
+              <span className="pill coral">✗ {" "} против — пишем «нет»</span>
+              <span className="pill lav">💬 {" "} идеи — в общий чат</span>
             </div>
             <div className="pageno" style={{ marginTop: 32 }}>13 / 14</div>
           </div>
