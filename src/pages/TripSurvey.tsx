@@ -260,7 +260,7 @@ const TripSurvey = () => {
                     className="survey-input"
                     value={data.sector}
                     onChange={e => updateField('sector', e.target.value)}
-                    placeholder="Например: 4"
+                    placeholder="Например: Кишинев"
                   />
                 </div>
               </div>
