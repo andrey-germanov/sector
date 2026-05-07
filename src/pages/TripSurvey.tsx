@@ -23,14 +23,37 @@ interface BookingData {
   paymentNotes: string
 }
 
-const CITY_OPTIONS: { label: string; value: string; group: DepartureGroup }[] = [
-  { label: 'Кишинёв', value: 'Кишинёв', group: 'chisinau' },
-  { label: 'Одесса', value: 'Одесса', group: 'chisinau' },
-  { label: 'Киев', value: 'Киев', group: 'chisinau' },
-  { label: 'Вильнюс', value: 'Вильнюс', group: 'vilnius' },
-  { label: 'Рига', value: 'Рига', group: 'vilnius' },
-  { label: 'Таллин', value: 'Таллин', group: 'vilnius' },
+const CITY_GROUPS: {
+  group: DepartureGroup
+  airport: string
+  cities: { label: string; value: string }[]
+}[] = [
+  {
+    group: 'chisinau',
+    airport: 'Вылет из Кишинёва',
+    cities: [
+      { label: 'Кишинёв', value: 'Кишинёв' },
+      { label: 'Одесса', value: 'Одесса' },
+      { label: 'Киев', value: 'Киев' },
+    ],
+  },
+  {
+    group: 'vilnius',
+    airport: 'Вылет из Вильнюса',
+    cities: [
+      { label: 'Вильнюс', value: 'Вильнюс' },
+      { label: 'Рига', value: 'Рига' },
+      { label: 'Таллин', value: 'Таллин' },
+    ],
+  },
 ]
+
+const cityToGroup = (value: string): DepartureGroup => {
+  for (const g of CITY_GROUPS) {
+    if (g.cities.some(c => c.value === value)) return g.group
+  }
+  return ''
+}
 
 const ACTIVITIES = ['Футбол', 'Волейбол', 'Аквапарк / водные активности', 'Вечеринки / диджей-сеты']
 const HELP_OPTIONS = [
@@ -85,11 +108,10 @@ const TripSurvey = () => {
   }
 
   const setCity = (value: string) => {
-    const opt = CITY_OPTIONS.find(o => o.value === value)
     setData(prev => ({
       ...prev,
       departureCity: value,
-      departureGroup: opt?.group ?? '',
+      departureGroup: cityToGroup(value),
     }))
   }
 
@@ -294,35 +316,49 @@ const TripSurvey = () => {
             <div className="step">
               <h2 className="step-title">Откуда летишь и в какой комнате</h2>
 
-              <label className="field-label">Из какого города вылетаешь?</label>
-              <div className="chip-grid">
-                {CITY_OPTIONS.map(opt => (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    className={`chip ${data.departureCity === opt.value ? 'active' : ''}`}
-                    onClick={() => setCity(opt.value)}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
+              <label className="field-label">Из какого города ты добираешься?</label>
+              <p className="step-hint" style={{ marginTop: 0, marginBottom: 8, fontSize: '0.82rem', opacity: 0.7 }}>
+                Вылеты из Кишинёва и Вильнюса. Одесса/Киев — через Кишинёв, Рига/Таллин — через Вильнюс.
+              </p>
+              {CITY_GROUPS.map(g => (
+                <div key={g.group} className="city-group">
+                  <div className="city-group-label">{g.airport}</div>
+                  <div className="chip-grid">
+                    {g.cities.map(opt => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className={`chip ${data.departureCity === opt.value ? 'active' : ''}`}
+                        onClick={() => setCity(opt.value)}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
 
               <label className="field-label">Тип номера</label>
-              <div className="july-choice">
+              <div className="room-choice">
                 <button
                   type="button"
-                  className={`choice-btn ${data.roomType === 'double' ? 'active' : ''}`}
+                  className={`room-btn ${data.roomType === 'double' ? 'active' : ''}`}
                   onClick={() => updateField('roomType', 'double')}
                 >
-                  2-местный
+                  <span className="room-btn-title">2-местный</span>
+                  <span className="room-btn-price">
+                    1500 € <span className="room-btn-price-sub">за номер · 750 €/чел</span>
+                  </span>
                 </button>
                 <button
                   type="button"
-                  className={`choice-btn ${data.roomType === 'triple' ? 'active' : ''}`}
+                  className={`room-btn ${data.roomType === 'triple' ? 'active' : ''}`}
                   onClick={() => updateField('roomType', 'triple')}
                 >
-                  3-местный
+                  <span className="room-btn-title">3-местный</span>
+                  <span className="room-btn-price">
+                    2080 € <span className="room-btn-price-sub">за номер · ~693 €/чел</span>
+                  </span>
                 </button>
               </div>
 

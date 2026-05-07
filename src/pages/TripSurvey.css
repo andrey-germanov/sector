@@ -307,6 +307,78 @@
   box-shadow: 0 0 0 3px rgba(255, 0, 5, 0.1);
 }
 
+/* Room type choice */
+.room-choice {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.room-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.room-btn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
+}
+
+.room-btn.active {
+  border-color: var(--accent-red);
+  background: rgba(255, 0, 5, 0.1);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 3px rgba(255, 0, 5, 0.1);
+}
+
+.room-btn-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.room-btn-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent-red);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.room-btn-price-sub {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+/* City grouping */
+.city-group {
+  margin-bottom: 0.75rem;
+}
+
+.city-group-label {
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  margin-top: 0.5rem;
+}
+
 /* Hotel card */
 .hotel-card {
   background: var(--bg-primary);
@@ -699,7 +771,8 @@
     gap: 0.75rem;
   }
 
-  .july-choice {
+  .july-choice,
+  .room-choice {
     flex-direction: column;
   }
 
