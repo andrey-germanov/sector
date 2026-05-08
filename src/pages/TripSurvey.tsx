@@ -128,7 +128,7 @@ const TripSurvey = () => {
     data.departureGroup === 'chisinau'
       ? '07.07 — 13.07 (6 ночей)'
       : data.departureGroup === 'vilnius'
-      ? '06.07 — 11.07 (5 ночей)'
+      ? '04.07 — 09.07 (5 ночей)'
       : ''
 
   const prepayPercent =
